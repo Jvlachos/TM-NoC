@@ -1,0 +1,3 @@
+[submodule "hw/RISC-V-Core"]
+	path = hw/RISC-V-Core
+	url = https://github.com/Jvlachos/RISC-V-Core.git
