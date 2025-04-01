@@ -26,7 +26,7 @@ module InputUnit
     input   clk,
     input   reset_n,
     input   FLIT_t i_flit,
-    input   logic i_transmit_req,
+    input   logic i_upstream_req,
     input   logic i_switch_ack,
     output  logic o_transmit_ack,
     output  logic o_switch_req,
@@ -111,7 +111,7 @@ module InputUnit
             buffer_write <= 0;
         end
         else begin
-             if(port_status == PORT_STATUS_t'(PORT_FREE) && i_transmit_req) begin
+             if(port_status == PORT_STATUS_t'(PORT_FREE) && i_upstream_req) begin
                 o_transmit_ack <= 1;
                 buffer_write   <= 1;
                 port_status <= PORT_STATUS_t'(PORT_OCCUPIED);
@@ -137,7 +137,7 @@ module InputUnit
 
 
 
-`   
+   
     always_ff @(posedge clk, negedge reset_n) begin : f2r
         if(~reset_n)
             fetch2route.flit <= '0;
@@ -147,15 +147,15 @@ module InputUnit
             fetch2route.flit <= fetch2route.flit;
     end
     
-     always_ff @(posedge clk, negedge reset_n) begin : r2s
-        if(~reset_n)
-            route2switch.flit <= '0;
-        else if(status_vec.gstate == ACTIVE)
-            route2switch.flit <= fetch2route.flit;
-        else 
-            route2switch.flit <= route2switch.flit;
-    end
-    assign o_r2s = route2switch;
+//     always_ff @(posedge clk, negedge reset_n) begin : r2s
+//        if(~reset_n)
+//            route2switch.flit <= '0;
+//        else if(status_vec.gstate == ACTIVE)
+//            route2switch.flit <= fetch2route.flit;
+//        else 
+//            route2switch.flit <= route2switch.flit;
+//    end
+    assign o_r2s = fetch2route;
     
    
 endmodule

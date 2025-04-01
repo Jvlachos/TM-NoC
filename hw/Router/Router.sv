@@ -27,10 +27,11 @@ module Router
     input reset_n,
     input   FLIT_t i_flit,
     input  PORT_ADDR_t i_port_addr,
-    input  logic i_transmit_req,
+    input  logic i_upstream_req,
     input  logic i_downstream_ack, 
     output logic o_on_off,
-    output logic o_downstream_req
+    output logic o_downstream_req,
+    output router_pipeline_bus_t o_s2d
     );
     
     IN_PORT_t iport1;
@@ -44,7 +45,7 @@ module Router
         .clk(clk),
         .reset_n(reset_n),
         .i_flit(i_flit),
-        .i_transmit_req(i_transmit_req),
+        .i_upstream_req(i_upstream_req),
         .i_switch_ack(switch_ack),
         .o_transmit_ack(o_on_off),
         .o_switch_req(switch_req),
@@ -62,7 +63,8 @@ module Router
         .o_switch_ack(switch_ack),
         .o_downstream_req(o_downstream_req),
         .o_vec(oport1.port_vec),
-        .o_port_status(oport1.port_status)  
+        .o_port_status(oport1.port_status),
+        .o_s2d(o_s2d)
     );
    
 //   assign o_on_off = write;

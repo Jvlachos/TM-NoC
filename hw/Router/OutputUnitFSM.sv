@@ -25,6 +25,7 @@ module OutputUnitFSM
     (
     input clk,
     input reset_n,
+    input FLIT_t i_flit,
     input logic i_downstream_ack,
     input logic i_switch_req,
     output logic o_switch_ack,
@@ -37,12 +38,13 @@ module OutputUnitFSM
     GLOBAL_STATE_t next_state;
     assign o_gstate = GLOBAL_STATE_t'(curr_state);
     logic activate;
+    logic send_done;
     always_comb begin
         next_state = IDLE;
          unique case(curr_state)
                 IDLE : next_state    = i_switch_req ? WAITING : IDLE;
                 ROUTING : ;
-                ACTIVE : next_state  = ACTIVE;
+                ACTIVE : next_state  = send_done ? IDLE : ACTIVE;
                 WAITING : next_state = activate ? ACTIVE : WAITING;
                 default : ;
          endcase 
@@ -51,25 +53,32 @@ module OutputUnitFSM
        always_comb begin
          activate = 0;
          o_switch_ack = 0;
+         o_port_status = PORT_STATUS_t'(PORT_FREE);
+          o_downstream_req = 0;
+         send_done = 0;
          case(curr_state)
                 IDLE : begin
-                    
+                    o_port_status = PORT_STATUS_t'(PORT_FREE);
                 end
                 ROUTING : begin
                   assert (0) else $error("ROUTING not allowed in output");
                     
                 end
                 ACTIVE : begin
-                
+                    o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
+                    //o_downstream_req = 1;
+//                    if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
+//                        send_done = 1;
                 end
                 WAITING : begin 
+                    o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
                     o_downstream_req = 1;
                     if(i_downstream_ack) begin
                         activate = 1;
                         o_switch_ack = 1;
                     end
                     else begin
-                        o_switch_ack = 1;
+                        o_switch_ack = 0;
                         activate = 0;
                     end
                 end

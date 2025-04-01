@@ -120,4 +120,10 @@ package router_pkg;
         GI_VEC_t     port_vec;
     } OUT_PORT_t;
      
+    typedef struct packed {
+        logic switch_req;
+        logic switch_ack;
+        logic downstream_req;
+        logic downstream_ack;
+    } traffic_cntrl_bus_t;
 endpackage

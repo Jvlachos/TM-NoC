@@ -30,6 +30,9 @@ import router_pkg::*;
     logic start = 0;
     logic send ;
     logic transmit;
+    router_pipeline_bus_t s2d;
+    logic downstream_req;
+    logic downstream_ack;
     always# (`CLK_PERIOD) clk = ~clk;
     
      TrafficGenerator  trafficGen (
@@ -40,14 +43,27 @@ import router_pkg::*;
         .o_flit(data_out),
         .o_transmit(transmit));
     
-    Router router(
+    Router router1(
         .clk(clk),
         .reset_n(reset),
         .i_flit(data_out),
         .i_port_addr(0),
-        .i_transmit_req(transmit),
-        .o_on_off(send)
+        .i_upstream_req(transmit),
+        .i_downstream_ack(downstream_ack),
+        .o_on_off(send),
+        .o_downstream_req(downstream_req),
+        .o_s2d(s2d)
     );
+    
+      Router router2(
+        .clk(clk),
+        .reset_n(reset),
+        .i_flit(s2d.flit),
+        .i_port_addr(0),
+        .i_upstream_req(downstream_req),
+        .o_on_off(downstream_ack)
+    );
+    
     
     initial begin
       
@@ -61,7 +77,7 @@ import router_pkg::*;
          end
        // start = 0;
         //send = 1;
-         repeat (20) begin 
+         repeat (25) begin 
             @(posedge clk);
          end
          start= 0;
