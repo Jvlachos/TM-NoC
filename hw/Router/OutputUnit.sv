@@ -37,7 +37,7 @@ module OutputUnit
     
     GI_VEC_t oport_status_vec;
     PORT_STATUS_t oport_status;
-  
+     router_pipeline_bus_t s2d;
     logic switch_ack_ff;
     OutputUnitFSM ofsm (
         .clk(clk),
@@ -48,7 +48,8 @@ module OutputUnit
         .o_switch_ack(switch_ack),
         .o_downstream_req(o_downstream_req),
         .o_gstate(oport_status_vec.gstate),
-        .o_port_status(o_port_status)
+        .o_port_status(o_port_status),
+        .o_bus_s2d(s2d)
     );
     
     
@@ -63,10 +64,9 @@ module OutputUnit
     always_ff@(posedge clk, negedge reset_n) begin : switch_2_downstream
         if(~reset_n)
             o_s2d.flit <= '0;
-        else if(oport_status_vec.gstate == GLOBAL_STATE_t'(ACTIVE))
-            o_s2d.flit <= i_r2s;
-        else
-            o_s2d.flit <= '0;
+        else 
+            o_s2d.flit <= s2d;
+       
     end
     
 endmodule

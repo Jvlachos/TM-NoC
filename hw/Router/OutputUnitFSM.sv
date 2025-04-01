@@ -31,7 +31,8 @@ module OutputUnitFSM
     output logic o_switch_ack,
     output logic o_downstream_req,
     output GLOBAL_STATE_t o_gstate,
-    output PORT_STATUS_t o_port_status
+    output PORT_STATUS_t o_port_status,
+    output  router_pipeline_bus_t o_bus_s2d
     );
     
     GLOBAL_STATE_t curr_state;
@@ -56,6 +57,7 @@ module OutputUnitFSM
          o_port_status = PORT_STATUS_t'(PORT_FREE);
           o_downstream_req = 0;
          send_done = 0;
+         o_bus_s2d = '0;
          case(curr_state)
                 IDLE : begin
                     o_port_status = PORT_STATUS_t'(PORT_FREE);
@@ -66,9 +68,9 @@ module OutputUnitFSM
                 end
                 ACTIVE : begin
                     o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
-                    //o_downstream_req = 1;
-//                    if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
-//                        send_done = 1;
+                   o_bus_s2d.flit = i_flit;
+                    if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
+                        send_done = 1;
                 end
                 WAITING : begin 
                     o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
