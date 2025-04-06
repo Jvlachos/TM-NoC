@@ -30,7 +30,8 @@ module InputUnitFSM
     input GLOBAL_STATE_t  i_outstate,
     output GLOBAL_STATE_t o_gstate,
     output logic o_switch_req,
-    output ROUTE_t o_route
+    output ROUTE_t o_route,
+    output logic o_packet_done
     );
     
     GLOBAL_STATE_t curr_state;
@@ -41,7 +42,7 @@ module InputUnitFSM
     always_comb begin
         next_state = IDLE;
          unique case(curr_state)
-                IDLE : next_state = i_flit.flit[FLIT_SIZE-1] ? ROUTING : IDLE;
+                IDLE : next_state = i_flit.flit[FLIT_SIZE-1] && i_flit.head.flit_type == FLIT_TYPE_t'(HEAD_FLIT) ? ROUTING : IDLE;
                 ROUTING : next_state = routing_success ? ACTIVE : ROUTING;
                 ACTIVE : next_state = send_done ? IDLE : ACTIVE;
                 WAITING : next_state = routing_success ? ROUTING : WAITING;
@@ -49,7 +50,7 @@ module InputUnitFSM
          endcase 
     end
     
-   
+    assign o_packet_done = send_done;
     always_comb begin
         routing_success = 0;
         o_route = {1'b1,{NUM_OF_PORTS_BITS-1{1'b0}}}; //invalid  1msb 0000lsbs
@@ -68,8 +69,8 @@ module InputUnitFSM
                         routing_success =0; 
                 end
                 ACTIVE : begin
-//                    if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
-//                        send_done = 1;
+                    if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
+                        send_done = 1;
                 end
                 WAITING : begin 
                 

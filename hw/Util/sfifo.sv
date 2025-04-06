@@ -99,8 +99,8 @@ assign o_fifo_full = (wr_ptr_ff[FIFO_DEPTH-1:0] == rd_ptr_ff[FIFO_DEPTH-1:0] &
 //            $display("Reading from mem[%0d] : 0x%0h\n",rd_ptr_ff[FIFO_DEPTH-1:0],mem[rd_ptr_ff[FIFO_DEPTH-1:0]]);
             o_fifo_read_data = mem[rd_ptr_ff[FIFO_DEPTH-1:0]];
         end
-       // else 
-          //  o_fifo_read_data = {FIFO_WIDTH{1'bx}};
+//       else 
+//            o_fifo_read_data = {FIFO_WIDTH{1'bx}};
     end
 
 //    always_ff@(posedge clk, negedge rst_n) begin : read_mem

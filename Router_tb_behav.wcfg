@@ -13,14 +13,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,569.418 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomEndTime time="3,922.401 ns"></ZoomEndTime>
+      <Cursor1Time time="1,440.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="274"></NameColumnWidth>
+      <NameColumnWidth column_width="246"></NameColumnWidth>
       <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="16" />
+   <WVObjectSize size="25" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -45,14 +45,6 @@
       <obj_property name="ElementShortName">o_transmit_ack</obj_property>
       <obj_property name="ObjectShortName">o_transmit_ack</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/i_flit" type="array">
-      <obj_property name="ElementShortName">i_flit</obj_property>
-      <obj_property name="ObjectShortName">i_flit</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/o_s2d" type="array">
-      <obj_property name="ElementShortName">o_s2d</obj_property>
-      <obj_property name="ObjectShortName">o_s2d</obj_property>
-   </wvobject>
    <wvobject fp_name="/Router_tb/router1/out1/i_r2s" type="array">
       <obj_property name="ElementShortName">i_r2s</obj_property>
       <obj_property name="ObjectShortName">i_r2s</obj_property>
@@ -60,11 +52,6 @@
    <wvobject fp_name="/Router_tb/router1/out1/ofsm/curr_state" type="array">
       <obj_property name="ElementShortName">curr_state[1:0]</obj_property>
       <obj_property name="ObjectShortName">curr_state[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/INPUT_BUFFER/mem" type="array">
-      <obj_property name="ElementShortName">mem[3:0][18:0]</obj_property>
-      <obj_property name="ObjectShortName">mem[3:0][18:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router2/in1/INPUT_BUFFER/i_fifo_read" type="logic">
       <obj_property name="ElementShortName">i_fifo_read</obj_property>
@@ -86,5 +73,54 @@
    <wvobject fp_name="/Router_tb/router1/out1/oport_status_vec" type="array">
       <obj_property name="ElementShortName">oport_status_vec</obj_property>
       <obj_property name="ObjectShortName">oport_status_vec</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/port_status" type="other">
+      <obj_property name="ElementShortName">port_status</obj_property>
+      <obj_property name="ObjectShortName">port_status</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/status_vec" type="array">
+      <obj_property name="ElementShortName">status_vec</obj_property>
+      <obj_property name="ObjectShortName">status_vec</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/trafficGen/i_send" type="logic">
+      <obj_property name="ElementShortName">i_send</obj_property>
+      <obj_property name="ObjectShortName">i_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/trafficGen/curr_state_ff" type="array">
+      <obj_property name="ElementShortName">curr_state_ff[2:0]</obj_property>
+      <obj_property name="ObjectShortName">curr_state_ff[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/i_upstream_req" type="logic">
+      <obj_property name="ElementShortName">i_upstream_req</obj_property>
+      <obj_property name="ObjectShortName">i_upstream_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/o_on_off" type="logic">
+      <obj_property name="ElementShortName">o_on_off</obj_property>
+      <obj_property name="ObjectShortName">o_on_off</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/i_flit" type="array">
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/fetch_en" type="logic">
+      <obj_property name="ElementShortName">fetch_en</obj_property>
+      <obj_property name="ObjectShortName">fetch_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/buffer_write" type="logic">
+      <obj_property name="ElementShortName">buffer_write</obj_property>
+      <obj_property name="ObjectShortName">buffer_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/sent" type="logic">
+      <obj_property name="ElementShortName">sent</obj_property>
+      <obj_property name="ObjectShortName">sent</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/in1/fsm/i_flit" type="array">
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router2/in1/INPUT_BUFFER/mem" type="array">
+      <obj_property name="ElementShortName">mem[3:0][18:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[3:0][18:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>

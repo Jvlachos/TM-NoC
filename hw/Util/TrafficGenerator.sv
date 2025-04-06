@@ -22,7 +22,7 @@
 
 module TrafficGenerator
     import router_pkg::*;
-  #(parameter BODY_COUNT=1  )
+  #(parameter BODY_COUNT=2  )
    (
     input  logic clk,
     input  logic reset_n,
@@ -45,6 +45,7 @@ module TrafficGenerator
     STATE_t curr_state_ff;
     STATE_t next_state;
      FLIT_t data;
+     FLIT_t data_out;
     logic  bodyDone;
     logic  [$clog2(BODY_COUNT):0] bodyCount;
     logic  [$clog2(BODY_COUNT):0] bodyCounter;
@@ -96,10 +97,21 @@ module TrafficGenerator
         .i_fifo_read (fifo_read),
         .i_fifo_write_data(data),
         .o_fifo_full(fifo_full),
-        .o_fifo_read_data(o_flit),
+        .o_fifo_read_data(data_out),
         .o_fifo_empty(fifo_empty)
     );
     
+    always_ff@(posedge clk, negedge reset_n) begin
+        if(~reset_n)
+            o_flit <= '0;
+        else begin
+            if(fifo_read)
+                o_flit <= data_out;
+            else
+                o_flit <= '0;
+        end
+    
+    end
     
     always_comb begin
         next_state = IDLE;

@@ -77,10 +77,10 @@ import router_pkg::*;
          end
        // start = 0;
         //send = 1;
-         repeat (25) begin 
+         repeat (50) begin 
             @(posedge clk);
          end
-         start= 0;
+        // start= 0;
          //send = 0;
         $finish;
     end

@@ -43,12 +43,12 @@ module InputUnit
     logic buffer_write;
     logic fetch_en;
     logic buffer_read;
-    logic sent = 0;
+    logic sent;
     GRP_VEC_t status_vec; 
     PORT_STATUS_t  port_status;
     assign o_port_status = port_status;
     assign o_vec = status_vec;
-    sfifo #(FLIT_SIZE,NUM_OF_FLITS_BITS) INPUT_BUFFER 
+    sfifo #(FLIT_SIZE,$clog2(NUM_OF_FLITS)) INPUT_BUFFER 
     (
       .clk(clk),
       .rst_n(reset_n),
@@ -67,18 +67,10 @@ module InputUnit
         .i_flit(fetch2route.flit),
         .i_switch_ack(i_switch_ack),
         .o_gstate(status_vec.gstate),
-        .o_switch_req(o_switch_req)
+        .o_switch_req(o_switch_req),
+        .o_packet_done(sent)
     );
     
-//    always_comb begin : bufferStatus
-//          status_vec.buffer_status = PACKET_EMPTY;
-//          if(i_flit.tail.flit_type == TAIL_FLIT )
-//            status_vec.buffer_status = PACKET_RECEIVED;
-//          else if(buffer_empty && sent)
-//            status_vec.buffer_status = PACKET_SENT;
-//          else if(!buffer_empty && !buffer_full)
-//            status_vec.buffer_status = PACKET_FILLING;
-//    end
     
      always_ff@(posedge clk, negedge reset_n) begin : bufferStatus
           if(~reset_n)
@@ -86,9 +78,9 @@ module InputUnit
           else begin
               if(i_flit.tail.flit_type == TAIL_FLIT )
                 status_vec.buffer_status <= PACKET_RECEIVED;
-              else if(buffer_empty && sent)
-                status_vec.buffer_status <= PACKET_SENT;
-              else if(!buffer_empty && !buffer_full)
+              else if(buffer_empty )
+                status_vec.buffer_status <= PACKET_EMPTY;
+              else if(!buffer_empty && !buffer_full && status_vec.gstate == IDLE)
                 status_vec.buffer_status <= PACKET_FILLING;
               else
                 status_vec.buffer_status <= status_vec.buffer_status;
@@ -101,9 +93,9 @@ module InputUnit
         if(status_vec.gstate != ROUTING
             && status_vec.buffer_status == PACKET_RECEIVED)
             fetch_en = 1;
-    
     end
-    
+
+   
     always_ff @(posedge clk, negedge reset_n) begin : port_status_ff
         if(~reset_n) begin
             port_status <= PORT_STATUS_t'(PORT_FREE);
@@ -111,26 +103,43 @@ module InputUnit
             buffer_write <= 0;
         end
         else begin
-             if(port_status == PORT_STATUS_t'(PORT_FREE) && i_upstream_req) begin
-                o_transmit_ack <= 1;
-                buffer_write   <= 1;
-                port_status <= PORT_STATUS_t'(PORT_OCCUPIED);
+            unique case(port_status) 
+             PORT_FREE : begin
+                if(i_upstream_req) begin
+                    o_transmit_ack <= 1;
+                    buffer_write   <= 1;
+                    port_status <= PORT_STATUS_t'(PORT_OCCUPIED);
+                end
+                else begin
+                    o_transmit_ack <= 0;
+                    buffer_write   <= 0;
+                    port_status  <= port_status;
+                end
              end
-             else if(port_status == PORT_STATUS_t'(PORT_OCCUPIED)) begin
-                o_transmit_ack <= 0;
-                //buffer_write   <= buffer_write;
-                port_status  <= port_status;
-                if(status_vec.buffer_status == PACKET_RECEIVED)
-                    buffer_write <= 0;
-                else
-                    buffer_write <= buffer_write;    
-                  
-             end  
-             else begin
-                o_transmit_ack <= 0;
-                buffer_write   <= 0;
-                port_status  <= port_status;
-             end
+              PORT_OCCUPIED:  begin
+                if(sent) begin
+                    if(i_upstream_req) begin
+                        port_status <= PORT_STATUS_t'(PORT_OCCUPIED);
+                        buffer_write <= 1;
+                        o_transmit_ack <= 1;
+                    end
+                    else begin
+                        port_status <= PORT_STATUS_t'(PORT_FREE);
+                        buffer_write <= 0;
+                        o_transmit_ack <= 0;
+                    end
+                end
+                else begin
+                    o_transmit_ack <= 0;
+                    port_status  <= port_status;
+                    if(status_vec.buffer_status == PACKET_RECEIVED)
+                        buffer_write <= 0;
+                    else
+                        buffer_write <= buffer_write;    
+                    end
+                end
+               default : assert (0) else $error("[port_status_ff] : ERROR Port status");
+              endcase       
         end
         
     end
@@ -146,15 +155,7 @@ module InputUnit
         else
             fetch2route.flit <= fetch2route.flit;
     end
-    
-//     always_ff @(posedge clk, negedge reset_n) begin : r2s
-//        if(~reset_n)
-//            route2switch.flit <= '0;
-//        else if(status_vec.gstate == ACTIVE)
-//            route2switch.flit <= fetch2route.flit;
-//        else 
-//            route2switch.flit <= route2switch.flit;
-//    end
+
     assign o_r2s = fetch2route;
     
    

@@ -23,7 +23,7 @@
 package router_pkg;
     localparam NUM_OF_PORTS = 4;
     localparam FLIT_SIZE    = 19;
-    localparam NUM_OF_FLITS = 3;
+    localparam NUM_OF_FLITS = 4;
     localparam NUM_OF_FLITS_BITS = 2;
     localparam PACKET_SIZE  = NUM_OF_FLITS * FLIT_SIZE;
     localparam NUM_OF_PORTS_BITS = $clog2(NUM_OF_PORTS);
