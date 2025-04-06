@@ -23,7 +23,8 @@
 package router_pkg;
     localparam NUM_OF_PORTS = 4;
     localparam FLIT_SIZE    = 19;
-    localparam NUM_OF_FLITS = 4;
+    localparam NUM_OF_FLITS = 3;
+    localparam NUM_OF_FLITS_BITS = 2;
     localparam PACKET_SIZE  = NUM_OF_FLITS * FLIT_SIZE;
     localparam NUM_OF_PORTS_BITS = $clog2(NUM_OF_PORTS);
     
@@ -41,7 +42,8 @@ package router_pkg;
     typedef struct packed {
         logic  valid;
         FLIT_TYPE_t   flit_type;
-        logic [FLIT_DATA_BITS-1:0]        address;
+        logic [(FLIT_DATA_BITS/2)-1:0]        xaddr;
+        logic [(FLIT_DATA_BITS/2)-1:0]        yaddr;
     } FLIT_HEAD_t;
     
     typedef struct packed {

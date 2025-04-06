@@ -22,7 +22,7 @@
 
 module TrafficGenerator
     import router_pkg::*;
-  #(parameter BODY_COUNT=2  )
+  #(parameter BODY_COUNT=1  )
    (
     input  logic clk,
     input  logic reset_n,
@@ -66,7 +66,8 @@ module TrafficGenerator
         
         val.head.valid =1;
         val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
-        val.head.address = packet_append;
+        val.head.xaddr = packet_append[15:8];
+        val.head.yaddr = packet_append[7:0];
         
         return val;
     endfunction
@@ -122,7 +123,9 @@ module TrafficGenerator
         fifo_write =0;
         data.head.valid = 0;
         data.head.flit_type = FLIT_TYPE_t'(NONE_FLIT);
-        data.head.address = '0;
+        data.head.xaddr = '0;
+        data.head.yaddr = '0;
+        
         o_transmit = 0;
         if( i_start ) begin
             case(curr_state_ff)

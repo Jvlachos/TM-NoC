@@ -48,7 +48,7 @@ module InputUnit
     PORT_STATUS_t  port_status;
     assign o_port_status = port_status;
     assign o_vec = status_vec;
-    sfifo #(FLIT_SIZE,$clog2(NUM_OF_FLITS)) INPUT_BUFFER 
+    sfifo #(FLIT_SIZE,NUM_OF_FLITS_BITS) INPUT_BUFFER 
     (
       .clk(clk),
       .rst_n(reset_n),
