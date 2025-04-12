@@ -27,8 +27,8 @@ module OutputUnitFSM
     input reset_n,
     input FLIT_t i_flit,
     input logic i_downstream_ack,
-    input logic i_switch_req,
-    output logic o_switch_ack,
+    input logic [NUM_OF_PORTS-1:0]i_switch_req,
+    output logic [NUM_OF_PORTS-1:0]o_outport_ack,
     output logic o_downstream_req,
     output GLOBAL_STATE_t o_gstate,
     output PORT_STATUS_t o_port_status,
@@ -53,7 +53,7 @@ module OutputUnitFSM
     
        always_comb begin
          activate = 0;
-         o_switch_ack = 0;
+         o_outport_ack = 0;
          o_port_status = PORT_STATUS_t'(PORT_FREE);
           o_downstream_req = 0;
          send_done = 0;
@@ -77,10 +77,10 @@ module OutputUnitFSM
                     o_downstream_req = 1;
                     if(i_downstream_ack) begin
                         activate = 1;
-                        o_switch_ack = 1;
+                        o_outport_ack = 1;
                     end
                     else begin
-                        o_switch_ack = 0;
+                        o_outport_ack = 0;
                         activate = 0;
                     end
                 end

@@ -28,6 +28,20 @@ package router_pkg;
     localparam PACKET_SIZE  = NUM_OF_FLITS * FLIT_SIZE;
     localparam NUM_OF_PORTS_BITS = $clog2(NUM_OF_PORTS);
     
+    typedef struct packed {
+        logic [(FLIT_DATA_BITS/2)-1:0]        xaddr;
+        logic [(FLIT_DATA_BITS/2)-1:0]        yaddr;
+    } ROUTER_CONFIG;
+    
+    typedef enum logic [2:0] {
+        LOCAL  = 3'd0,
+        NORTH  = 3'd1,
+        SOUTH  = 3'd2,
+        EAST   = 3'd3,
+        WEST   = 3'd4,
+        NONE   = 3'd5
+    } PORT_T;
+    
     typedef enum logic [1:0] {
         HEAD_FLIT=0,
         TAIL_FLIT=1,

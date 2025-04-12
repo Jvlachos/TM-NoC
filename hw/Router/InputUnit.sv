@@ -28,6 +28,7 @@ module InputUnit
     input   FLIT_t i_flit,
     input   logic i_upstream_req,
     input   logic i_switch_ack,
+    input   logic i_routing_success,
     output  logic o_transmit_ack,
     output  logic o_switch_req,
     output  GRP_VEC_t o_vec,
@@ -66,6 +67,7 @@ module InputUnit
         .reset_n(reset_n),
         .i_flit(fetch2route.flit),
         .i_switch_ack(i_switch_ack),
+        .routing_success(i_routing_success),
         .o_gstate(status_vec.gstate),
         .o_switch_req(o_switch_req),
         .o_packet_done(sent)
@@ -141,7 +143,6 @@ module InputUnit
                default : assert (0) else $error("[port_status_ff] : ERROR Port status");
               endcase       
         end
-        
     end
 
 

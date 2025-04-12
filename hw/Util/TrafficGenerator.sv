@@ -67,8 +67,10 @@ module TrafficGenerator
         
         val.head.valid =1;
         val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
-        val.head.xaddr = packet_append[15:8];
-        val.head.yaddr = packet_append[7:0];
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+        val.head.xaddr     = 8'd1;   // x = 1
+        val.head.yaddr     = 8'd0;   // y = 0
         
         return val;
     endfunction

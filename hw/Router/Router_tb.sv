@@ -26,28 +26,32 @@ import router_pkg::*;
     
     logic clk = 1;
     logic reset = 0;
-    logic [FLIT_SIZE-1:0] data_out;
     logic start = 0;
-    logic send ;
-    logic transmit;
-    router_pipeline_bus_t s2d;
-    logic downstream_req;
-    logic downstream_ack;
+    
+    FLIT_t data_out   [NUM_OF_PORTS];
+    logic transmit    [NUM_OF_PORTS];
+    logic send        [NUM_OF_PORTS];
+    logic downstream_ack [NUM_OF_PORTS];
+    logic downstream_req [NUM_OF_PORTS];
+    router_pipeline_bus_t s2d [NUM_OF_PORTS];
+    
     always# (`CLK_PERIOD) clk = ~clk;
     
      TrafficGenerator  trafficGen (
         .clk(clk),
         .reset_n(reset),
         .i_start(start),
-        .i_send(send),
-        .o_flit(data_out),
-        .o_transmit(transmit));
+        .i_send(send[LOCAL]),
+        .o_flit(data_out[LOCAL]),
+        .o_transmit(transmit[LOCAL])
+    );
     
-    Router router1(
+    Router #(
+    .router_conf('{xaddr: 0, yaddr: 0})
+    )router1(
         .clk(clk),
         .reset_n(reset),
         .i_flit(data_out),
-        .i_port_addr(0),
         .i_upstream_req(transmit),
         .i_downstream_ack(downstream_ack),
         .o_on_off(send),
@@ -55,11 +59,12 @@ import router_pkg::*;
         .o_s2d(s2d)
     );
     
-      Router router2(
+     Router #(
+    .router_conf('{xaddr: 1, yaddr: 0})
+    )router2(
         .clk(clk),
         .reset_n(reset),
-        .i_flit(s2d.flit),
-        .i_port_addr(0),
+        .i_flit(s2d),
         .i_upstream_req(downstream_req),
         .o_on_off(downstream_ack)
     );

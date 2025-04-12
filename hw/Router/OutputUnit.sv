@@ -25,14 +25,14 @@ module OutputUnit
     (
     input   clk,
     input   reset_n,
-    input   router_pipeline_bus_t i_r2s,
-    input   logic  i_switch_request,
+    input   router_pipeline_bus_t i_s2o,
+    input   logic  [NUM_OF_PORTS-1:0]i_switch_request,
     input   logic  i_downstream_ack,
-    output  logic  o_switch_ack,
+    output  logic  [NUM_OF_PORTS-1:0]o_outport_ack,
     output  logic  o_downstream_req,
     output  GI_VEC_t o_vec,
     output  PORT_STATUS_t o_port_status,
-    output  router_pipeline_bus_t o_s2d
+    output  router_pipeline_bus_t o_o2d
     );
     
     GI_VEC_t oport_status_vec;
@@ -42,10 +42,10 @@ module OutputUnit
     OutputUnitFSM ofsm (
         .clk(clk),
         .reset_n(reset_n),
-        .i_flit(i_r2s.flit),
+        .i_flit(i_s2o.flit),
         .i_downstream_ack(i_downstream_ack),
         .i_switch_req(i_switch_request),
-        .o_switch_ack(switch_ack),
+        .o_outport_ack(switch_ack),
         .o_downstream_req(o_downstream_req),
         .o_gstate(oport_status_vec.gstate),
         .o_port_status(o_port_status),
@@ -55,17 +55,17 @@ module OutputUnit
     
       always_ff@(posedge clk, negedge reset_n) begin : switch_ack_reg
         if(~reset_n)
-            o_switch_ack <= '0;
+            o_outport_ack <= '0;
         else
-            o_switch_ack <= switch_ack;
+            o_outport_ack <= switch_ack;
       
     end
     
     always_ff@(posedge clk, negedge reset_n) begin : switch_2_downstream
         if(~reset_n)
-            o_s2d.flit <= '0;
+            o_o2d.flit <= '0;
         else 
-            o_s2d.flit <= s2d;
+            o_o2d.flit <= s2d;
        
     end
     

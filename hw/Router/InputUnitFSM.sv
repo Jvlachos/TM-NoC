@@ -28,6 +28,7 @@ module InputUnitFSM
     input FLIT_t i_flit,
     input logic i_switch_ack,
     input GLOBAL_STATE_t  i_outstate,
+    input logic routing_success,
     output GLOBAL_STATE_t o_gstate,
     output logic o_switch_req,
     output ROUTE_t o_route,
@@ -37,8 +38,8 @@ module InputUnitFSM
     GLOBAL_STATE_t curr_state;
     GLOBAL_STATE_t next_state;
     assign o_gstate = GLOBAL_STATE_t'(next_state);
-     logic routing_success;
     logic send_done;
+    
     always_comb begin
         next_state = IDLE;
          unique case(curr_state)
@@ -51,22 +52,16 @@ module InputUnitFSM
     end
     
     assign o_packet_done = send_done;
+    
     always_comb begin
-        routing_success = 0;
         o_route = {1'b1,{NUM_OF_PORTS_BITS-1{1'b0}}}; //invalid  1msb 0000lsbs
-        o_switch_req = 0;
         send_done = 0;
          case(curr_state)
                 IDLE : begin
                 
                 end
                 ROUTING : begin
-                   assert (i_flit.head.flit_type == HEAD_FLIT) else $error("ROUTING: Flit is not head");
-                   o_switch_req = 1;
-                   if(i_switch_ack)
-                        routing_success =1;
-                   else
-                        routing_success =0; 
+                   
                 end
                 ACTIVE : begin
                     if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
@@ -75,8 +70,7 @@ module InputUnitFSM
                 WAITING : begin 
                 
                 end
-         endcase 
-    
+         endcase
     end
     
     always_ff @(posedge clk, negedge reset_n) begin
