@@ -27,6 +27,16 @@ package router_pkg;
     localparam NUM_OF_FLITS_BITS = 2;
     localparam PACKET_SIZE  = NUM_OF_FLITS * FLIT_SIZE;
     localparam NUM_OF_PORTS_BITS = $clog2(NUM_OF_PORTS);
+    typedef enum logic [1:0] {
+        HEAD_FLIT=0,
+        TAIL_FLIT=1,
+        BODY_FLIT=2,
+        NONE_FLIT=3
+    }FLIT_TYPE_t;
+    
+    localparam FLIT_TYPE_BITS = $bits(FLIT_TYPE_t);
+    localparam FLIT_CNTRL_BITS = FLIT_TYPE_BITS+1;
+    localparam FLIT_DATA_BITS  = FLIT_SIZE-FLIT_CNTRL_BITS;
     
     typedef struct packed {
         logic [(FLIT_DATA_BITS/2)-1:0]        xaddr;
@@ -42,16 +52,11 @@ package router_pkg;
         NONE   = 3'd5
     } PORT_T;
     
-    typedef enum logic [1:0] {
-        HEAD_FLIT=0,
-        TAIL_FLIT=1,
-        BODY_FLIT=2,
-        NONE_FLIT=3
-    }FLIT_TYPE_t;
+    typedef enum logic {
+        P_IDLE,
+        P_ACTIVE
+    } P_STATUS;
     
-    localparam FLIT_TYPE_BITS = $bits(FLIT_TYPE_t);
-    localparam FLIT_CNTRL_BITS = FLIT_TYPE_BITS+1;
-    localparam FLIT_DATA_BITS  = FLIT_SIZE-FLIT_CNTRL_BITS;
     
     typedef struct packed {
         logic  valid;

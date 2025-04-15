@@ -40,10 +40,22 @@ module OutputUnitFSM
     assign o_gstate = GLOBAL_STATE_t'(curr_state);
     logic activate;
     logic send_done;
+    logic [$clog2(NUM_OF_PORTS)-1:0] requesting_port;
+    logic found_port;
+    
     always_comb begin
         next_state = IDLE;
+        found_port = 0;
+        requesting_port = '0;
+        for (int i = 0; i < NUM_OF_PORTS; i++) begin
+            if (i_switch_req[i]) begin
+                requesting_port = i;
+                found_port = 1;
+                break;
+            end
+        end
          unique case(curr_state)
-                IDLE : next_state    = i_switch_req ? WAITING : IDLE;
+                IDLE : next_state    = found_port ? WAITING : IDLE;
                 ROUTING : ;
                 ACTIVE : next_state  = send_done ? IDLE : ACTIVE;
                 WAITING : next_state = activate ? ACTIVE : WAITING;
@@ -77,10 +89,10 @@ module OutputUnitFSM
                     o_downstream_req = 1;
                     if(i_downstream_ack) begin
                         activate = 1;
-                        o_outport_ack = 1;
+                        o_outport_ack[requesting_port] = 1;
                     end
                     else begin
-                        o_outport_ack = 0;
+                        o_outport_ack[requesting_port] = 0;
                         activate = 0;
                     end
                 end

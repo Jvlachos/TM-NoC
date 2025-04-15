@@ -52,10 +52,10 @@ module Router
                 .clk(clk),
                 .reset_n(reset_n),
                 .i_flit(i_flit[i]),
-                .i_upstream_req(i_upstream_req[i]), // giati kai switch_req kai upstream_req
+                .i_upstream_req(i_upstream_req[i]),
                 .i_switch_ack(switch_ack[i]),
                 .i_routing_success(routing_success[i]),
-                .o_transmit_ack(o_on_off[i]), // prepei na mpei sto switch
+                .o_transmit_ack(o_on_off[i]), 
                 .o_switch_req(switch_req[i]), 
                 .o_vec(iport[i].port_vec),
                 .o_port_status(iport[i].port_status),

@@ -41,7 +41,7 @@ module InputUnitFSM
     logic send_done;
     
     always_comb begin
-        next_state = IDLE;
+         next_state = IDLE;
          unique case(curr_state)
                 IDLE : next_state = i_flit.flit[FLIT_SIZE-1] && i_flit.head.flit_type == FLIT_TYPE_t'(HEAD_FLIT) ? ROUTING : IDLE;
                 ROUTING : next_state = routing_success ? ACTIVE : ROUTING;
@@ -58,17 +58,18 @@ module InputUnitFSM
         send_done = 0;
          case(curr_state)
                 IDLE : begin
-                
+                    o_switch_req = 0;
                 end
                 ROUTING : begin
-                   
+                   o_switch_req = 1;
                 end
                 ACTIVE : begin
+                    o_switch_req = 0;
                     if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
                         send_done = 1;
                 end
                 WAITING : begin 
-                
+                    o_switch_req = 0;
                 end
          endcase
     end

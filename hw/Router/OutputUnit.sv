@@ -26,15 +26,15 @@ module OutputUnit
     input   clk,
     input   reset_n,
     input   router_pipeline_bus_t i_s2o,
-    input   logic  [NUM_OF_PORTS-1:0]i_switch_request,
     input   logic  i_downstream_ack,
+    input   logic  [NUM_OF_PORTS-1:0]i_switch_request,
     output  logic  [NUM_OF_PORTS-1:0]o_outport_ack,
     output  logic  o_downstream_req,
     output  GI_VEC_t o_vec,
     output  PORT_STATUS_t o_port_status,
     output  router_pipeline_bus_t o_o2d
     );
-    
+    logic  [NUM_OF_PORTS-1:0]switch_ack=0;
     GI_VEC_t oport_status_vec;
     PORT_STATUS_t oport_status;
      router_pipeline_bus_t s2d;

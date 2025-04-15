@@ -31,35 +31,64 @@ module Switch
     );
     integer i;
     integer xaddr, yaddr;
-    PORT_T next_port;
-    
+    P_STATUS port_status[NUM_OF_PORTS]= '{default: P_IDLE};
+    PORT_T next_port[NUM_OF_PORTS]='{default: NONE};
     always_comb begin
+      routing_success = '{default: 0};
+      o_outport_req = '{default: 0};
+      next_port = '{default: NONE};
+      o_s2o = '{default: 0};
+      xaddr=0;
+      yaddr=0;
+      
+      
        for (i = 0; i < NUM_OF_PORTS; i = i + 1) begin
-          o_outport_req[i] = '0;
-          routing_success[i] = 0;
-          next_port = NONE;
-          if(i_switch_req[i] == 1) begin
+          if(i_switch_req[i] == 1 && port_status[i] == P_IDLE) begin
             xaddr = i_r2s[i].flit.head.xaddr;
             yaddr = i_r2s[i].flit.head.yaddr;
+            $display("Cycle %0t: Input Port %0d requested. Dest=(%0d,%0d), Router=(%0d,%0d)", 
+                 $time, i, xaddr, yaddr, router_conf.xaddr, router_conf.yaddr);
             if (xaddr == router_conf.xaddr && yaddr == router_conf.yaddr)
-                next_port = LOCAL;
+                next_port[i] = LOCAL;
             else if (xaddr > router_conf.xaddr)
-                next_port = EAST;
+                next_port[i] = EAST;
             else if (xaddr < router_conf.xaddr)
-                next_port = WEST;
+                next_port[i] = WEST;
             else if (yaddr > router_conf.yaddr)
-                next_port = NORTH;
+                next_port[i] = NORTH;
             else if (yaddr < router_conf.yaddr)
-                next_port = SOUTH;
+                next_port[i] = SOUTH;
             else
-                next_port = NONE;
-          if (next_port != NONE) begin
-              o_outport_req[next_port][i] = 1'b1;
-              if (i_outport_ack[next_port][i] == 1'b1) begin
-                o_s2o[next_port] = i_r2s[i];
+                next_port[i] = NONE;
+          $display("Cycle %0t: Computed next port for input %0d is %s", 
+                 $time, i, next_port[i].name());
+          if (next_port[i] != NONE) begin
+              o_outport_req[next_port[i]][i] = 1'b1;
+              if (i_outport_ack[next_port[i]][i] == 1'b1) begin
+              $display("Cycle %0t: got ACK from %s for input %0d", 
+                         $time, next_port[i].name(), i);
+                o_s2o[next_port[i]] = i_r2s[i];
                 routing_success[i] = 1;
+                port_status[i] = P_ACTIVE;
+              end else begin
+                $display("Cycle %0t: NO ACK from %s for input %0d", 
+                         $time, next_port[i].name(), i);
               end
           end
+       end else if(i_switch_req[i] == 1 && port_status[i] == P_ACTIVE) begin
+        $display("Cycle %0t: input %0d is still transmiting in switch", 
+                 $time, i, next_port[i].name());
+        o_s2o[next_port[i]] = i_r2s[i];
+        routing_success[i] = 1;
+        port_status[i] = P_ACTIVE;
+       end
+       if (o_s2o[i].flit.head.flit_type == TAIL_FLIT) begin 
+        $display("Cycle %0t: input %0d transmits tail FLIT", 
+             $time, i, next_port[i].name());
+        port_status[i] = P_IDLE;
+        next_port[i]= NONE;
+        o_s2o[i] = 0;
+        routing_success[i] = 0;
        end
     end
   end  

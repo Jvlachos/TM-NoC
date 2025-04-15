@@ -120,7 +120,7 @@ assign o_fifo_full = (wr_ptr_ff[FIFO_DEPTH-1:0] == rd_ptr_ff[FIFO_DEPTH-1:0] &
         if(!rst_n)
             mem[wr_ptr_ff[FIFO_DEPTH-1:0]] <= 'x;
         else if(i_fifo_write & ~o_fifo_full) begin
-            $display("Writing at mem[%0d] : 0x%0h ,time %0t\n",wr_ptr_ff[FIFO_DEPTH-1:0],i_fifo_write_data,$time);
+            //$display("Writing at mem[%0d] : 0x%0h ,time %0t\n",wr_ptr_ff[FIFO_DEPTH-1:0],i_fifo_write_data,$time);
             mem[wr_ptr_ff[FIFO_DEPTH-1:0]] <= i_fifo_write_data;
         end
         else if(i_fifo_read & ~o_fifo_empty)
