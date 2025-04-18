@@ -48,7 +48,8 @@ module Router
     genvar i;
     generate
         for (i = 0; i < NUM_OF_PORTS; i++) begin : gen_ports
-            InputUnit in_inst (
+            InputUnit  #(.router_conf(router_conf)) in_inst 
+            (
                 .clk(clk),
                 .reset_n(reset_n),
                 .i_flit(i_flit[i]),
@@ -83,6 +84,8 @@ module Router
     Switch #(
     .router_conf(router_conf)
     )switch (
+            .clk(clk),
+            .rst_n(reset_n),
             .i_r2s(r2s),
             .i_switch_req(switch_req),
             .i_outport_ack(outport_ack),

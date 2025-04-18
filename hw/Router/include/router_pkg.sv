@@ -21,7 +21,7 @@
 
 
 package router_pkg;
-    localparam NUM_OF_PORTS = 4;
+    localparam NUM_OF_PORTS = 5;
     localparam FLIT_SIZE    = 19;
     localparam NUM_OF_FLITS = 4;
     localparam NUM_OF_FLITS_BITS = 2;
@@ -49,8 +49,8 @@ package router_pkg;
         SOUTH  = 3'd2,
         EAST   = 3'd3,
         WEST   = 3'd4,
-        NONE   = 3'd5
-    } PORT_T;
+        NONE_PORT   = 3'd5
+    } PORT_t;
     
     typedef enum logic {
         P_IDLE,
@@ -121,6 +121,7 @@ package router_pkg;
     
     typedef struct packed {
         FLIT_t flit;
+        PORT_t target_port;
     } router_pipeline_bus_t;
 //    typedef logic [PACKET_SIZE-1:0] INPUT_BUFFER_t;
     

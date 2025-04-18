@@ -22,8 +22,9 @@
 
 module InputUnit
     import router_pkg::*;
+    #(parameter ROUTER_CONFIG router_conf ='{default:9999})
     (
-    input   clk,
+     input   clk,
     input   reset_n,
     input   FLIT_t i_flit,
     input   logic i_upstream_req,
@@ -38,7 +39,6 @@ module InputUnit
     
     logic [FLIT_SIZE-1:0] buffer_odata;
     router_pipeline_bus_t fetch2route;
-    router_pipeline_bus_t route2switch;
     logic buffer_full;
     logic buffer_empty;
     logic buffer_write;
@@ -47,8 +47,10 @@ module InputUnit
     logic sent;
     GRP_VEC_t status_vec; 
     PORT_STATUS_t  port_status;
+    PORT_t  target_port;
     assign o_port_status = port_status;
     assign o_vec = status_vec;
+    
     sfifo #(FLIT_SIZE,$clog2(NUM_OF_FLITS)) INPUT_BUFFER 
     (
       .clk(clk),
@@ -62,7 +64,9 @@ module InputUnit
     );
     
     
-    InputUnitFSM fsm (
+    InputUnitFSM #(
+    .router_conf(router_conf)) fsm  
+     (
         .clk(clk),
         .reset_n(reset_n),
         .i_flit(fetch2route.flit),
@@ -70,7 +74,8 @@ module InputUnit
         .routing_success(i_routing_success),
         .o_gstate(status_vec.gstate),
         .o_switch_req(o_switch_req),
-        .o_packet_done(sent)
+        .o_packet_done(sent),
+        .o_next_port(target_port)
     );
     
     
@@ -143,21 +148,28 @@ module InputUnit
                default : assert (0) else $error("[port_status_ff] : ERROR Port status");
               endcase       
         end
+        
     end
 
 
 
    
     always_ff @(posedge clk, negedge reset_n) begin : f2r
-        if(~reset_n)
-            fetch2route.flit <= '0;
-        else if(fetch_en)
+        if(~reset_n) begin
+            fetch2route.flit.head.flit_type = NONE_FLIT;
+           // fetch2route.target_port = NONE_PORT;
+         end   
+        else if(fetch_en) begin
             fetch2route.flit <= buffer_odata;
-        else
+           // fetch2route.target_port <= target_port;
+        end
+        else begin
             fetch2route.flit <= fetch2route.flit;
+           // fetch2route.target_port <= fetch2route.target_port;
+        end
     end
-
-    assign o_r2s = fetch2route;
+    assign o_r2s.target_port = target_port ;
+    assign o_r2s.flit = fetch2route.flit;
     
    
 endmodule

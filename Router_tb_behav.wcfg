@@ -13,14 +13,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="3,922.401 ns"></ZoomEndTime>
-      <Cursor1Time time="1,440.000 ns"></Cursor1Time>
+      <ZoomEndTime time="1,935.794 ns"></ZoomEndTime>
+      <Cursor1Time time="600.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="246"></NameColumnWidth>
-      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+      <NameColumnWidth column_width="263"></NameColumnWidth>
+      <ValueColumnWidth column_width="320"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="25" />
+   <WVObjectSize size="21" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -28,59 +28,6 @@
    <wvobject fp_name="/Router_tb/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/status_vec" type="array">
-      <obj_property name="ElementShortName">status_vec</obj_property>
-      <obj_property name="ObjectShortName">status_vec</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/fetch2route" type="array">
-      <obj_property name="ElementShortName">fetch2route</obj_property>
-      <obj_property name="ObjectShortName">fetch2route</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/i_upstream_req" type="logic">
-      <obj_property name="ElementShortName">i_upstream_req</obj_property>
-      <obj_property name="ObjectShortName">i_upstream_req</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/o_transmit_ack" type="logic">
-      <obj_property name="ElementShortName">o_transmit_ack</obj_property>
-      <obj_property name="ObjectShortName">o_transmit_ack</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/i_r2s" type="array">
-      <obj_property name="ElementShortName">i_r2s</obj_property>
-      <obj_property name="ObjectShortName">i_r2s</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/ofsm/curr_state" type="array">
-      <obj_property name="ElementShortName">curr_state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">curr_state[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/INPUT_BUFFER/i_fifo_read" type="logic">
-      <obj_property name="ElementShortName">i_fifo_read</obj_property>
-      <obj_property name="ObjectShortName">i_fifo_read</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/INPUT_BUFFER/mem" type="array">
-      <obj_property name="ElementShortName">mem[3:0][18:0]</obj_property>
-      <obj_property name="ObjectShortName">mem[3:0][18:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/o_switch_ack" type="logic">
-      <obj_property name="ElementShortName">o_switch_ack</obj_property>
-      <obj_property name="ObjectShortName">o_switch_ack</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/i_downstream_ack" type="logic">
-      <obj_property name="ElementShortName">i_downstream_ack</obj_property>
-      <obj_property name="ObjectShortName">i_downstream_ack</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/out1/oport_status_vec" type="array">
-      <obj_property name="ElementShortName">oport_status_vec</obj_property>
-      <obj_property name="ObjectShortName">oport_status_vec</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/port_status" type="other">
-      <obj_property name="ElementShortName">port_status</obj_property>
-      <obj_property name="ObjectShortName">port_status</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/status_vec" type="array">
-      <obj_property name="ElementShortName">status_vec</obj_property>
-      <obj_property name="ObjectShortName">status_vec</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/trafficGen/i_send" type="logic">
       <obj_property name="ElementShortName">i_send</obj_property>
@@ -90,37 +37,76 @@
       <obj_property name="ElementShortName">curr_state_ff[2:0]</obj_property>
       <obj_property name="ObjectShortName">curr_state_ff[2:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/i_upstream_req" type="logic">
-      <obj_property name="ElementShortName">i_upstream_req</obj_property>
-      <obj_property name="ObjectShortName">i_upstream_req</obj_property>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /target_port" type="array">
+      <obj_property name="ElementShortName">target_port[2:0]</obj_property>
+      <obj_property name="ObjectShortName">target_port[2:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/o_on_off" type="logic">
-      <obj_property name="ElementShortName">o_on_off</obj_property>
-      <obj_property name="ObjectShortName">o_on_off</obj_property>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /o_r2s" type="array">
+      <obj_property name="ElementShortName">o_r2s</obj_property>
+      <obj_property name="ObjectShortName">o_r2s</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/i_flit" type="array">
-      <obj_property name="ElementShortName">i_flit</obj_property>
-      <obj_property name="ObjectShortName">i_flit</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/fetch_en" type="logic">
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /fetch_en" type="logic">
       <obj_property name="ElementShortName">fetch_en</obj_property>
       <obj_property name="ObjectShortName">fetch_en</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/buffer_write" type="logic">
-      <obj_property name="ElementShortName">buffer_write</obj_property>
-      <obj_property name="ObjectShortName">buffer_write</obj_property>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /fsm/next_state" type="array">
+      <obj_property name="ElementShortName">next_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">next_state[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/sent" type="logic">
-      <obj_property name="ElementShortName">sent</obj_property>
-      <obj_property name="ObjectShortName">sent</obj_property>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /fsm/curr_state" type="array">
+      <obj_property name="ElementShortName">curr_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">curr_state[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/in1/fsm/i_flit" type="array">
-      <obj_property name="ElementShortName">i_flit</obj_property>
-      <obj_property name="ObjectShortName">i_flit</obj_property>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /fsm/routing_success" type="logic">
+      <obj_property name="ElementShortName">routing_success</obj_property>
+      <obj_property name="ObjectShortName">routing_success</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router2/in1/INPUT_BUFFER/mem" type="array">
-      <obj_property name="ElementShortName">mem[3:0][18:0]</obj_property>
-      <obj_property name="ObjectShortName">mem[3:0][18:0]</obj_property>
+   <wvobject fp_name="/Router_tb/router1/switch/routing_success" type="array">
+      <obj_property name="ElementShortName">routing_success[0:3]</obj_property>
+      <obj_property name="ObjectShortName">routing_success[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /i_routing_success" type="logic">
+      <obj_property name="ElementShortName">i_routing_success</obj_property>
+      <obj_property name="ObjectShortName">i_routing_success</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/o_outport_req" type="array">
+      <obj_property name="ElementShortName">o_outport_req[0:3][3:0]</obj_property>
+      <obj_property name="ObjectShortName">o_outport_req[0:3][3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/i_outport_ack" type="array">
+      <obj_property name="ElementShortName">i_outport_ack[0:3][3:0]</obj_property>
+      <obj_property name="ObjectShortName">i_outport_ack[0:3][3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/o_s2o" type="array">
+      <obj_property name="ElementShortName">o_s2o[0:3]</obj_property>
+      <obj_property name="ObjectShortName">o_s2o[0:3]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/out_en" type="logic">
+      <obj_property name="ElementShortName">out_en</obj_property>
+      <obj_property name="ObjectShortName">out_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/i_r2s" type="array">
+      <obj_property name="ElementShortName">i_r2s[0:3]</obj_property>
+      <obj_property name="ObjectShortName">i_r2s[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/s2o" type="array">
+      <obj_property name="ElementShortName">s2o[0:3]</obj_property>
+      <obj_property name="ObjectShortName">s2o[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/port_status_ff" type="array">
+      <obj_property name="ElementShortName">port_status_ff[0:3]</obj_property>
+      <obj_property name="ObjectShortName">port_status_ff[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/arb/req" type="array">
+      <obj_property name="ElementShortName">req[3:0]</obj_property>
+      <obj_property name="ObjectShortName">req[3:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/arb/grant" type="array">
+      <obj_property name="ElementShortName">grant[3:0]</obj_property>
+      <obj_property name="ObjectShortName">grant[3:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>

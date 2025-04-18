@@ -34,9 +34,15 @@ import router_pkg::*;
     logic downstream_ack [NUM_OF_PORTS];
     logic downstream_req [NUM_OF_PORTS];
     router_pipeline_bus_t s2d [NUM_OF_PORTS];
+    FLIT_t to_router [NUM_OF_PORTS];
     
     always# (`CLK_PERIOD) clk = ~clk;
-    
+    genvar i;
+generate
+    for (i = 0; i < 4; i++) begin
+        assign to_router[i] = s2d[i].flit;
+    end
+endgenerate
      TrafficGenerator  trafficGen (
         .clk(clk),
         .reset_n(reset),
@@ -64,7 +70,7 @@ import router_pkg::*;
     )router2(
         .clk(clk),
         .reset_n(reset),
-        .i_flit(s2d),
+        .i_flit(to_router),
         .i_upstream_req(downstream_req),
         .o_on_off(downstream_ack)
     );
