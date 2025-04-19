@@ -151,7 +151,11 @@ module InputUnit
         
     end
 
-
+    function automatic FLIT_t invalid_flit();
+        FLIT_t inval = '0;;
+        inval.head.flit_type = NONE_FLIT;
+        return inval;
+    endfunction
 
    
     always_ff @(posedge clk, negedge reset_n) begin : f2r
@@ -169,7 +173,7 @@ module InputUnit
         end
     end
     assign o_r2s.target_port = target_port ;
-    assign o_r2s.flit = fetch2route.flit;
+    assign o_r2s.flit = target_port != NONE_PORT ? fetch2route.flit : invalid_flit();
     
    
 endmodule

@@ -53,11 +53,14 @@ package router_pkg;
     } PORT_t;
     
     typedef enum logic {
-        P_IDLE,
-        P_ACTIVE
+        P_IDLE=0,
+        P_ACTIVE=1
     } P_STATUS;
     
-    
+    typedef struct packed{
+        P_STATUS source_port;
+        P_STATUS target_port;
+    } SW_PORT_STATUS;
     typedef struct packed {
         logic  valid;
         FLIT_TYPE_t   flit_type;

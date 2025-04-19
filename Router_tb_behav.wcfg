@@ -13,14 +13,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,935.794 ns"></ZoomEndTime>
-      <Cursor1Time time="600.000 ns"></Cursor1Time>
+      <ZoomEndTime time="2,447.708 ns"></ZoomEndTime>
+      <Cursor1Time time="919.944 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="263"></NameColumnWidth>
-      <ValueColumnWidth column_width="320"></ValueColumnWidth>
+      <NameColumnWidth column_width="203"></NameColumnWidth>
+      <ValueColumnWidth column_width="232"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="21" />
+   <WVObjectSize size="24" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -63,50 +63,66 @@
       <obj_property name="ObjectShortName">routing_success</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/routing_success" type="array">
-      <obj_property name="ElementShortName">routing_success[0:3]</obj_property>
-      <obj_property name="ObjectShortName">routing_success[0:3]</obj_property>
+      <obj_property name="ElementShortName">routing_success[0:4]</obj_property>
+      <obj_property name="ObjectShortName">routing_success[0:4]</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/\gen_ports[0].in_inst /i_routing_success" type="logic">
       <obj_property name="ElementShortName">i_routing_success</obj_property>
       <obj_property name="ObjectShortName">i_routing_success</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/o_outport_req" type="array">
-      <obj_property name="ElementShortName">o_outport_req[0:3][3:0]</obj_property>
-      <obj_property name="ObjectShortName">o_outport_req[0:3][3:0]</obj_property>
+      <obj_property name="ElementShortName">o_outport_req[0:4][4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_outport_req[0:4][4:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/i_outport_ack" type="array">
-      <obj_property name="ElementShortName">i_outport_ack[0:3][3:0]</obj_property>
-      <obj_property name="ObjectShortName">i_outport_ack[0:3][3:0]</obj_property>
+      <obj_property name="ElementShortName">i_outport_ack[0:4][4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_outport_ack[0:4][4:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/o_s2o" type="array">
-      <obj_property name="ElementShortName">o_s2o[0:3]</obj_property>
-      <obj_property name="ObjectShortName">o_s2o[0:3]</obj_property>
+      <obj_property name="ElementShortName">o_s2o[0:4]</obj_property>
+      <obj_property name="ObjectShortName">o_s2o[0:4]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/out_en" type="logic">
       <obj_property name="ElementShortName">out_en</obj_property>
       <obj_property name="ObjectShortName">out_en</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/switch/i_r2s" type="array">
-      <obj_property name="ElementShortName">i_r2s[0:3]</obj_property>
-      <obj_property name="ObjectShortName">i_r2s[0:3]</obj_property>
-   </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/s2o" type="array">
-      <obj_property name="ElementShortName">s2o[0:3]</obj_property>
-      <obj_property name="ObjectShortName">s2o[0:3]</obj_property>
+      <obj_property name="ElementShortName">s2o[0:4]</obj_property>
+      <obj_property name="ObjectShortName">s2o[0:4]</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/port_status_ff" type="array">
-      <obj_property name="ElementShortName">port_status_ff[0:3]</obj_property>
-      <obj_property name="ObjectShortName">port_status_ff[0:3]</obj_property>
+      <obj_property name="ElementShortName">port_status_ff[4:0]</obj_property>
+      <obj_property name="ObjectShortName">port_status_ff[4:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/arb/req" type="array">
-      <obj_property name="ElementShortName">req[3:0]</obj_property>
-      <obj_property name="ObjectShortName">req[3:0]</obj_property>
+      <obj_property name="ElementShortName">req[4:0]</obj_property>
+      <obj_property name="ObjectShortName">req[4:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/arb/grant" type="array">
-      <obj_property name="ElementShortName">grant[3:0]</obj_property>
-      <obj_property name="ObjectShortName">grant[3:0]</obj_property>
+      <obj_property name="ElementShortName">grant[4:0]</obj_property>
+      <obj_property name="ObjectShortName">grant[4:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/o_s2o" type="array">
+      <obj_property name="ElementShortName">o_s2o[0:4]</obj_property>
+      <obj_property name="ObjectShortName">o_s2o[0:4]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/port_status" type="array">
+      <obj_property name="ElementShortName">port_status[4:0]</obj_property>
+      <obj_property name="ObjectShortName">port_status[4:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/i_switch_req" type="array">
+      <obj_property name="ElementShortName">i_switch_req[0:4]</obj_property>
+      <obj_property name="ObjectShortName">i_switch_req[0:4]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/i_r2s" type="array">
+      <obj_property name="ElementShortName">i_r2s[0:4]</obj_property>
+      <obj_property name="ObjectShortName">i_r2s[0:4]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>
