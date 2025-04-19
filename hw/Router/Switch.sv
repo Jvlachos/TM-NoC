@@ -75,7 +75,7 @@ module Switch
             port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
             port_status[x].source_port = P_ACTIVE; 
           end 
-          if(i_r2s[x].flit.tail.flit_type == TAIL_FLIT) begin
+          if(o_s2o[x].flit.tail.flit_type == TAIL_FLIT) begin
              port_status[i_r2s[x].target_port].target_port = P_IDLE;
              port_status[x].source_port = P_IDLE; 
           end
