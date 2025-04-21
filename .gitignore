@@ -2,3 +2,6 @@ TM-NoC.cache/
 TM-NoC.hw/
 TM-NoC.ip_user_files/
 TM-Noc.sim/*
+*.jou
+*.log
+*.str

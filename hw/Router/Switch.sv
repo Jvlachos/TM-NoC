@@ -36,8 +36,7 @@ module Switch
     SW_PORT_STATUS  [NUM_OF_PORTS-1:0] port_status= '{default: P_IDLE};
     SW_PORT_STATUS [NUM_OF_PORTS-1:0] port_status_ff;
     router_pipeline_bus_t s2o[NUM_OF_PORTS];
-    logic out_en;
-   // PORT_T next_port[NUM_OF_PORTS]='{default: NONE};
+
    logic [4:0] grant;
    logic [4:0] req;
 
@@ -76,7 +75,7 @@ module Switch
             port_status[x].source_port = P_ACTIVE; 
           end 
           if(o_s2o[x].flit.tail.flit_type == TAIL_FLIT) begin
-             port_status[i_r2s[x].target_port].target_port = P_IDLE;
+             port_status[o_s2o[x].target_port].target_port = P_IDLE;
              port_status[x].source_port = P_IDLE; 
           end
      

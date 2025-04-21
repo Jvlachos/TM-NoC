@@ -75,15 +75,15 @@ module InputUnitFSM
                     yaddr = i_flit.head.yaddr;
           
                     if (xaddr == router_conf.xaddr && yaddr == router_conf.yaddr)
-                        next_port = LOCAL;
+                        next_port = LOCAL_PORT;
                     else if (xaddr > router_conf.xaddr)
-                        next_port = EAST;
+                        next_port = EAST_PORT;
                     else if (xaddr < router_conf.xaddr)
-                        next_port = WEST;
+                        next_port = WEST_PORT;
                     else if (yaddr > router_conf.yaddr)
-                        next_port = NORTH;
+                        next_port = NORTH_PORT;
                     else if (yaddr < router_conf.yaddr)
-                        next_port = SOUTH;
+                        next_port = SOUTH_PORT;
                     else
                         next_port = NONE_PORT;
                 end

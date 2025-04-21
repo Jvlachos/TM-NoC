@@ -44,11 +44,11 @@ package router_pkg;
     } ROUTER_CONFIG;
     
     typedef enum logic [2:0] {
-        LOCAL  = 3'd0,
-        NORTH  = 3'd1,
-        SOUTH  = 3'd2,
-        EAST   = 3'd3,
-        WEST   = 3'd4,
+        LOCAL_PORT  = 3'd0,
+        NORTH_PORT  = 3'd1,
+        SOUTH_PORT  = 3'd2,
+        EAST_PORT   = 3'd3,
+        WEST_PORT   = 3'd4,
         NONE_PORT   = 3'd5
     } PORT_t;
     
