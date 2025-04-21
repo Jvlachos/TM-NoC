@@ -32,20 +32,18 @@ module Switch
         output router_pipeline_bus_t o_s2o[NUM_OF_PORTS]
     );
     integer i,j,k,x;
-    integer xaddr, yaddr;
     SW_PORT_STATUS  [NUM_OF_PORTS-1:0] port_status= '{default: P_IDLE};
     SW_PORT_STATUS [NUM_OF_PORTS-1:0] port_status_ff;
-    router_pipeline_bus_t s2o[NUM_OF_PORTS];
 
    logic [4:0] grant;
-   logic [4:0] req;
-
+   logic [4:0] request_en;
+   
    always_comb begin
-    req = '0;
+    request_en = '0;
     for(k=0; k<NUM_OF_PORTS; k=k+1) begin
         if(i_switch_req[k]) begin
             if(i_r2s[k].target_port != NONE_PORT) 
-                req[k] = port_status[i_r2s[k].target_port].target_port == P_IDLE ? i_switch_req[k] : 0;
+                request_en[k] = port_status[i_r2s[k].target_port].target_port == P_IDLE ? i_switch_req[k] : 0;
         end
         
      end
@@ -54,7 +52,7 @@ module Switch
    arbiter arb (
     .clk(clk),
     .rst_n(rst_n),
-    .req(req),
+    .req(request_en),
     .grant(grant)
    );
     
@@ -62,34 +60,41 @@ module Switch
     o_outport_req = '{default: 0};
     routing_success = '{default: 0};
     port_status = port_status_ff;
+ 
     for(i=0; i<NUM_OF_PORTS; i=i+1) begin
-         o_outport_req[i_r2s[i].target_port] = req[i] ? grant : '0;
+         o_outport_req[i_r2s[i].target_port] = request_en[i] ? grant : '0;
     end
 
     for(x=0; x<NUM_OF_PORTS; x=x+1) begin
+          
           if (i_outport_ack[i_r2s[x].target_port]) begin
             for(j=0; j<NUM_OF_PORTS; j=j+1) 
                  routing_success[j] = i_outport_ack[i_r2s[x].target_port][j];
                  
             port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
             port_status[x].source_port = P_ACTIVE; 
+         
           end 
-          if(o_s2o[x].flit.tail.flit_type == TAIL_FLIT) begin
-             port_status[o_s2o[x].target_port].target_port = P_IDLE;
-             port_status[x].source_port = P_IDLE; 
-          end
-     
     end
    end
-
+    integer l;
   
   always_ff @(posedge clk, negedge rst_n) begin
     if(~rst_n) begin
         o_s2o <= '{default: 0};
         port_status_ff <=  '{default: P_IDLE};
+       
     end
     else    begin 
         port_status_ff <= port_status;
+     
+        for(l=0; l<NUM_OF_PORTS; l=l+1) begin
+         if(i_r2s[l].flit.tail.flit_type == TAIL_FLIT) begin
+            port_status_ff[i_r2s[l].target_port].target_port <= P_IDLE;
+            port_status_ff[l].source_port <= P_IDLE; 
+       
+          end
+        end
         if(port_status[0].target_port == P_ACTIVE) begin
             if(port_status[0].source_port == P_ACTIVE)      o_s2o[0] <= i_r2s[0];
             else if(port_status[1].source_port == P_ACTIVE) o_s2o[0] <= i_r2s[1];

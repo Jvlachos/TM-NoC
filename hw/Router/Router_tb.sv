@@ -47,9 +47,27 @@ endgenerate
         .clk(clk),
         .reset_n(reset),
         .i_start(start),
-        .i_send(send[LOCAL]),
-        .o_flit(data_out[LOCAL]),
-        .o_transmit(transmit[LOCAL])
+        .i_send(send[LOCAL_PORT]),
+        .o_flit(data_out[LOCAL_PORT]),
+        .o_transmit(transmit[LOCAL_PORT])
+    );
+    
+     TrafficGenerator  trafficGen1 (
+        .clk(clk),
+        .reset_n(reset),
+        .i_start(start),
+        .i_send(send[WEST_PORT]),
+        .o_flit(data_out[WEST_PORT]),
+        .o_transmit(transmit[WEST_PORT])
+    );
+    
+     TrafficGenerator  trafficGen2 (
+        .clk(clk),
+        .reset_n(reset),
+        .i_start(start),
+        .i_send(send[SOUTH_PORT]),
+        .o_flit(data_out[SOUTH_PORT]),
+        .o_transmit(transmit[SOUTH_PORT])
     );
     
     Router #(

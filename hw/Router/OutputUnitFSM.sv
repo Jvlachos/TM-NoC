@@ -48,7 +48,7 @@ module OutputUnitFSM
         found_port = 0;
         requesting_port = '0;
         for (int i = 0; i < NUM_OF_PORTS; i++) begin
-            if (i_switch_req[i]) begin
+            if (i_switch_req[i] && curr_state == IDLE) begin
                 requesting_port = i;
                 found_port = 1;
                 break;

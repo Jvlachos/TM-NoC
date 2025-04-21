@@ -12,13 +12,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="606.032 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,824.389 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="4,632.979 ns"></ZoomEndTime>
+      <Cursor1Time time="1,080.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="203"></NameColumnWidth>
-      <ValueColumnWidth column_width="224"></ValueColumnWidth>
+      <ValueColumnWidth column_width="196"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="20" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
@@ -45,17 +45,15 @@
       <obj_property name="ElementShortName">o_s2o[0:4]</obj_property>
       <obj_property name="ObjectShortName">o_s2o[0:4]</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/router1/switch/out_en" type="logic">
-      <obj_property name="ElementShortName">out_en</obj_property>
-      <obj_property name="ObjectShortName">out_en</obj_property>
-   </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/arb/req" type="array">
       <obj_property name="ElementShortName">req[4:0]</obj_property>
       <obj_property name="ObjectShortName">req[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/arb/grant" type="array">
       <obj_property name="ElementShortName">grant[4:0]</obj_property>
       <obj_property name="ObjectShortName">grant[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/router1/switch/port_status" type="array">
       <obj_property name="ElementShortName">port_status[4:0]</obj_property>
@@ -101,5 +99,10 @@
    <wvobject fp_name="/Router_tb/router1/\gen_ports[3].out_inst /o_port_status" type="other">
       <obj_property name="ElementShortName">o_port_status</obj_property>
       <obj_property name="ObjectShortName">o_port_status</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/router1/switch/o_s2o" type="array">
+      <obj_property name="ElementShortName">o_s2o[0:4]</obj_property>
+      <obj_property name="ObjectShortName">o_s2o[0:4]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>

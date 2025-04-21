@@ -28,19 +28,20 @@ module arbiter(
     );
     logic [2:0] pointer_req, next_pointer_req;
   
-  always @(posedge clk) begin
+  always @(posedge clk,negedge rst_n) begin
     if (~rst_n) pointer_req <= '0;
-    else       pointer_req <= next_pointer_req;
+    else     pointer_req <= next_pointer_req;
+    
   end
   
   always_comb begin
-    assign next_pointer_req = 3'b000;
-    casez (grant)
-      5'b00001: next_pointer_req = 3'b001;
-      5'b00010: next_pointer_req = 3'b010;
-      5'b00100: next_pointer_req = 3'b011;
-      5'b01000: next_pointer_req = 3'b100;
-      5'b10000: next_pointer_req = 3'b000;
+    next_pointer_req = 3'b000;
+    case (grant)
+      5'b00001: next_pointer_req =  3'b001 ;
+      5'b00010: next_pointer_req =  3'b010 ;
+      5'b00100: next_pointer_req =  3'b011 ;
+      5'b01000: next_pointer_req =  3'b100 ;
+      5'b10000: next_pointer_req =  3'b000 ;
     endcase
   end 
     
@@ -52,7 +53,7 @@ module arbiter(
 			else if (req[2]) grant = 5'b00100;
 			else if (req[3]) grant = 5'b01000;
 			else if (req[4]) grant = 5'b10000;
-			else grant = 4'b0000;
+			else grant = 5'b00000;
 		3'b001 :
 			if (req[1]) grant = 5'b00010;
 			else if (req[2]) grant = 5'b00100;
