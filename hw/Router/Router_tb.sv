@@ -28,71 +28,81 @@ import router_pkg::*;
     logic reset = 0;
     logic start = 0;
     
-    FLIT_t data_out   [NUM_OF_PORTS];
-    logic transmit    [NUM_OF_PORTS];
-    logic send        [NUM_OF_PORTS];
-    logic downstream_ack [NUM_OF_PORTS];
-    logic downstream_req [NUM_OF_PORTS];
-    router_pipeline_bus_t s2d [NUM_OF_PORTS];
-    FLIT_t to_router [NUM_OF_PORTS];
+    FLIT_t data_out   [ROWS][COLUMNS][NUM_OF_PORTS];
+    //logic transmit    [ROWS][COLUMNS][NUM_OF_PORTS];
+    //logic send        [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic downstream_ack [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic downstream_req [ROWS][COLUMNS][NUM_OF_PORTS];
+    router_pipeline_bus_t s2d [ROWS][COLUMNS][NUM_OF_PORTS]; // switch to downstream
+    FLIT_t to_router [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic down_to_upstream_req[ROWS][COLUMNS][NUM_OF_PORTS];
+    logic down_to_upstream_ack[ROWS][COLUMNS][NUM_OF_PORTS];
     
     always# (`CLK_PERIOD) clk = ~clk;
-    genvar i;
+    genvar i,j;
+    
 generate
-    for (i = 0; i < 4; i++) begin
-        assign to_router[i] = s2d[i].flit;
+    for (i = 0; i < ROWS; i++) begin
+        for (j = 0; j < COLUMNS; j++) begin
+            // NORTH neighbor
+            if (i > 0) begin
+                assign to_router[i][j][NORTH_PORT] = s2d[i-1][j][SOUTH_PORT].flit;
+                assign  down_to_upstream_req[i][j][NORTH_PORT] = downstream_req[i-1][j][SOUTH_PORT];
+                assign  down_to_upstream_ack[i][j][NORTH_PORT] = downstream_ack[i-1][j][SOUTH_PORT];
+            end
+
+            // SOUTH neighbor
+            if (i < ROWS-1) begin
+                assign to_router[i][j][SOUTH_PORT] = s2d[i+1][j][NORTH_PORT].flit;
+                assign down_to_upstream_req[i][j][SOUTH_PORT] = downstream_req[i+1][j][NORTH_PORT];
+                assign down_to_upstream_ack[i][j][SOUTH_PORT] = downstream_ack[i+1][j][NORTH_PORT];
+            end
+
+            // WEST neighbor
+            if (j > 0) begin
+                assign to_router[i][j][WEST_PORT] = s2d[i][j-1][EAST_PORT].flit;
+                assign  down_to_upstream_req[i][j][WEST_PORT] = downstream_req[i][j-1][EAST_PORT];
+                assign  down_to_upstream_ack[i][j][WEST_PORT] = downstream_ack[i][j-1][EAST_PORT];
+            end
+
+            // EAST neighbor
+            if (j < COLUMNS-1) begin
+                assign to_router[i][j][EAST_PORT] = s2d[i][j+1][WEST_PORT].flit;
+                assign  down_to_upstream_req[i][j][EAST_PORT] = downstream_req[i][j+1][WEST_PORT];
+                assign  down_to_upstream_ack[i][j][EAST_PORT] = downstream_ack[i][j+1][WEST_PORT];
+            end
+        end
     end
 endgenerate
-     TrafficGenerator  trafficGen (
-        .clk(clk),
-        .reset_n(reset),
-        .i_start(start),
-        .i_send(send[LOCAL_PORT]),
-        .o_flit(data_out[LOCAL_PORT]),
-        .o_transmit(transmit[LOCAL_PORT])
-    );
-    
-     TrafficGenerator  trafficGen1 (
-        .clk(clk),
-        .reset_n(reset),
-        .i_start(start),
-        .i_send(send[WEST_PORT]),
-        .o_flit(data_out[WEST_PORT]),
-        .o_transmit(transmit[WEST_PORT])
-    );
-    
-     TrafficGenerator  trafficGen2 (
-        .clk(clk),
-        .reset_n(reset),
-        .i_start(start),
-        .i_send(send[SOUTH_PORT]),
-        .o_flit(data_out[SOUTH_PORT]),
-        .o_transmit(transmit[SOUTH_PORT])
-    );
-    
-    Router #(
-    .router_conf('{xaddr: 0, yaddr: 0})
-    )router1(
-        .clk(clk),
-        .reset_n(reset),
-        .i_flit(data_out),
-        .i_upstream_req(transmit),
-        .i_downstream_ack(downstream_ack),
-        .o_on_off(send),
-        .o_downstream_req(downstream_req),
-        .o_s2d(s2d)
-    );
-    
-     Router #(
-    .router_conf('{xaddr: 1, yaddr: 0})
-    )router2(
-        .clk(clk),
-        .reset_n(reset),
-        .i_flit(to_router),
-        .i_upstream_req(downstream_req),
-        .o_on_off(downstream_ack)
-    );
-    
+
+generate
+    for (i = 0; i < ROWS; i++) begin
+        for (j = 0; j < COLUMNS; j++) begin
+             TrafficGenerator  trafficGen (
+                .clk(clk),
+                .reset_n(reset),
+                .i_start(start),
+                .i_send(downstream_ack[i][j][LOCAL_PORT]),
+                .o_flit(to_router[i][j][LOCAL_PORT]),
+                .o_transmit(down_to_upstream_req[i][j][LOCAL_PORT])
+             );
+             
+             Router #(
+            .router_conf('{xaddr: i, yaddr: j})
+            )router(
+                .clk(clk),
+                .reset_n(reset),
+                .i_flit(to_router[i][j]),
+                .i_upstream_req(down_to_upstream_req[i][j]),
+                .i_downstream_ack(down_to_upstream_ack[i][j]),
+                .o_on_off(downstream_ack[i][j]),
+                .o_downstream_req(downstream_req[i][j]),
+                .o_s2d(s2d[i][j])
+            );
+             
+        end
+    end
+endgenerate 
     
     initial begin
       

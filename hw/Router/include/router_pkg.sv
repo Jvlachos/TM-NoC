@@ -21,12 +21,17 @@
 
 
 package router_pkg;
+    localparam ROWS = 1;
+    localparam COLUMNS = 4;
+    localparam NUMBER_OF_ROUTERS = ROWS * COLUMNS;
+    
     localparam NUM_OF_PORTS = 5;
     localparam FLIT_SIZE    = 19;
     localparam NUM_OF_FLITS = 4;
     localparam NUM_OF_FLITS_BITS = 2;
     localparam PACKET_SIZE  = NUM_OF_FLITS * FLIT_SIZE;
     localparam NUM_OF_PORTS_BITS = $clog2(NUM_OF_PORTS);
+    
     typedef enum logic [1:0] {
         HEAD_FLIT=0,
         TAIL_FLIT=1,
