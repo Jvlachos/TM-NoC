@@ -70,7 +70,7 @@ module TrafficGenerator
         //val.head.xaddr = packet_append[15:8];
         //val.head.yaddr = packet_append[7:0];
         val.head.xaddr     = 8'd0;   // x = 0
-        val.head.yaddr     = 8'd3;   // y = 0
+        val.head.yaddr     = 8'd1;   // y = 0
         
         return val;
     endfunction
