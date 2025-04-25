@@ -12,72 +12,82 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,315.322 ns"></ZoomEndTime>
-      <Cursor1Time time="280.000 ns"></Cursor1Time>
+      <ZoomStartTime time="612.500 ns"></ZoomStartTime>
+      <ZoomEndTime time="2,565.501 ns"></ZoomEndTime>
+      <Cursor1Time time="2,240.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="203"></NameColumnWidth>
-      <ValueColumnWidth column_width="172"></ValueColumnWidth>
+      <ValueColumnWidth column_width="136"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="14" />
-   <wvobject type="logic" fp_name="/Router_tb/clk">
+   <WVObjectSize size="17" />
+   <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/Router_tb/reset">
+   <wvobject fp_name="/Router_tb/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/Router_tb/\genblk1[0].genblk1[0].trafficGen /o_transmit">
-      <obj_property name="ElementShortName">o_transmit</obj_property>
-      <obj_property name="ObjectShortName">o_transmit</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].trafficGen /o_flit">
-      <obj_property name="ElementShortName">o_flit</obj_property>
-      <obj_property name="ObjectShortName">o_flit</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_flit">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_flit" type="array">
       <obj_property name="ElementShortName">i_flit[0:4]</obj_property>
       <obj_property name="ObjectShortName">i_flit[0:4]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_upstream_req">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_upstream_req" type="array">
       <obj_property name="ElementShortName">i_upstream_req[0:4]</obj_property>
       <obj_property name="ObjectShortName">i_upstream_req[0:4]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_downstream_ack">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /i_downstream_ack" type="array">
       <obj_property name="ElementShortName">i_downstream_ack[0:4]</obj_property>
       <obj_property name="ObjectShortName">i_downstream_ack[0:4]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_on_off">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_on_off" type="array">
       <obj_property name="ElementShortName">o_on_off[0:4]</obj_property>
       <obj_property name="ObjectShortName">o_on_off[0:4]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_downstream_req">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_downstream_req" type="array">
       <obj_property name="ElementShortName">o_downstream_req[0:4]</obj_property>
       <obj_property name="ObjectShortName">o_downstream_req[0:4]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_s2d">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /o_s2d" type="array">
       <obj_property name="ElementShortName">o_s2d[0:4]</obj_property>
       <obj_property name="ObjectShortName">o_s2d[0:4]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /r2s">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /r2s" type="array">
       <obj_property name="ElementShortName">r2s[0:4]</obj_property>
       <obj_property name="ObjectShortName">r2s[0:4]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_req">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_req" type="array">
       <obj_property name="ElementShortName">switch_req[0:4]</obj_property>
       <obj_property name="ObjectShortName">switch_req[0:4]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_ack">
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_ack" type="array">
       <obj_property name="ElementShortName">switch_ack[0:4]</obj_property>
       <obj_property name="ObjectShortName">switch_ack[0:4]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/Router_tb/\genblk1[0].genblk1[0].trafficGen /i_send">
-      <obj_property name="ElementShortName">i_send</obj_property>
-      <obj_property name="ObjectShortName">i_send</obj_property>
+   <wvobject fp_name="/Router_tb/s2d" type="array">
+      <obj_property name="ElementShortName">s2d[0:0][0:1][0:4]</obj_property>
+      <obj_property name="ObjectShortName">s2d[0:0][0:1][0:4]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /\gen_ports[2].out_inst /o_downstream_req" type="logic">
+      <obj_property name="ElementShortName">o_downstream_req</obj_property>
+      <obj_property name="ObjectShortName">o_downstream_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/down_to_upstream_req" type="array">
+      <obj_property name="ElementShortName">down_to_upstream_req[0:0][0:1][0:4]</obj_property>
+      <obj_property name="ObjectShortName">down_to_upstream_req[0:0][0:1][0:4]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/downstream_req" type="array">
+      <obj_property name="ElementShortName">downstream_req[0:0][0:1][0:4]</obj_property>
+      <obj_property name="ObjectShortName">downstream_req[0:0][0:1][0:4]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[1].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[1].router /\gen_ports[0].out_inst /s2d" type="array">
+      <obj_property name="ElementShortName">s2d</obj_property>
+      <obj_property name="ObjectShortName">s2d</obj_property>
    </wvobject>
 </wave_config>

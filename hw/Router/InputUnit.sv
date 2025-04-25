@@ -151,11 +151,7 @@ module InputUnit
         
     end
 
-    function automatic FLIT_t invalid_flit();
-        FLIT_t inval = '0;;
-        inval.head.flit_type = NONE_FLIT;
-        return inval;
-    endfunction
+  
 
    
     always_ff @(posedge clk, negedge reset_n) begin : f2r

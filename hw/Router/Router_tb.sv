@@ -81,21 +81,29 @@ import router_pkg::*;
         end
     end
     
+    
+        TrafficGenerator  trafficGen (
+                    .clk(clk),
+                    .reset_n(reset),
+                    .i_start(start),
+                    .i_send(downstream_ack[0][0][LOCAL_PORT]),
+                    .o_flit(s2d[0][0][LOCAL_PORT].flit),
+                    .o_transmit(down_to_upstream_req[0][0][LOCAL_PORT]),
+                    .i_flit(to_router[0][1][LOCAL_PORT].flit),
+                    .i_rec_req(down_to_upstream_req[1][0][LOCAL_PORT]),
+                    .o_rec_ack(downstream_ack[1][0][LOCAL_PORT])
+                   
+                 );
+    
+    
     genvar k,l;
     generate
         for (k = 0; k < ROWS; k++) begin
             for (l = 0; l < COLUMNS; l++) begin
-                 TrafficGenerator  trafficGen (
-                    .clk(clk),
-                    .reset_n(reset),
-                    .i_start(start),
-                    .i_send(downstream_ack[k][l][LOCAL_PORT]),
-                    .o_flit(s2d[k][l][LOCAL_PORT]),
-                    .o_transmit(down_to_upstream_req[k][l][LOCAL_PORT])
-                 );
+             
                  
                  Router #(
-                .router_conf('{xaddr: k, yaddr: l})
+                .router_conf('{xaddr: l, yaddr: k})
                 )router(
                     .clk(clk),
                     .reset_n(reset),

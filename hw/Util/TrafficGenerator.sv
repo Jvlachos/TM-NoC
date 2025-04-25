@@ -29,9 +29,12 @@ module TrafficGenerator
     input  logic i_start,
     input  logic i_send,
     output  FLIT_t o_flit,
-    output logic o_transmit
+    output logic o_transmit,
+    input FLIT_t i_flit,
+    input  logic i_rec_req, 
+    output  logic o_rec_ack
     );
-    
+    assign o_rec_ack = 1;
     typedef enum logic [2:0] {
         IDLE = 0,
         HEAD,
@@ -42,10 +45,21 @@ module TrafficGenerator
         DONE
     } STATE_t; 
     
+    typedef enum logic [1:0] {
+        IN_IDLE =0,
+        IN_REC,
+        IN_DONE
+    } IN_STATE_t;
+    
     STATE_t curr_state_ff;
     STATE_t next_state;
+    
+    IN_STATE_t curr_in_state;
+    IN_STATE_t next_in_state;
+    
      FLIT_t data;
      FLIT_t data_out;
+     FLIT_t in_data_out;
     logic  bodyDone;
     logic  [$clog2(BODY_COUNT):0] bodyCount;
     logic  [$clog2(BODY_COUNT):0] bodyCounter;
@@ -53,7 +67,13 @@ module TrafficGenerator
     logic  fifo_read;
     logic  fifo_full;
     logic  fifo_empty;
+    
+    logic  in_fifo_write;
+    logic  in_fifo_read;
+    logic  in_fifo_full;
+    logic  in_fifo_empty;
     logic  [15:0] packet_append;
+   
     
     always_ff@(posedge clk,negedge reset_n) begin
         if(~reset_n)
@@ -69,8 +89,8 @@ module TrafficGenerator
         val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
         //val.head.xaddr = packet_append[15:8];
         //val.head.yaddr = packet_append[7:0];
-        val.head.xaddr     = 8'd0;   // x = 0
-        val.head.yaddr     = 8'd1;   // y = 0
+        val.head.xaddr     = 8'd1;   // x = 0
+        val.head.yaddr     = 8'd0;   // y = 0
         
         return val;
     endfunction
@@ -103,6 +123,19 @@ module TrafficGenerator
         .o_fifo_empty(fifo_empty)
     );
     
+    
+    sfifo #(FLIT_SIZE, $clog2(NUM_OF_FLITS)) inFIFO
+    (
+        .clk(clk),
+        .rst_n(reset_n),
+        .i_fifo_write(in_fifo_write),
+        .i_fifo_read (in_fifo_read),
+        .i_fifo_write_data(i_flit),
+        .o_fifo_full(in_fifo_full),
+        .o_fifo_read_data(in_data_out),
+        .o_fifo_empty(in_fifo_empty)
+    );
+    
     always_ff@(posedge clk, negedge reset_n) begin
         if(~reset_n)
             o_flit <= '0;
@@ -114,6 +147,17 @@ module TrafficGenerator
         end
     
     end
+    
+    always_comb begin
+        next_in_state = IN_IDLE;
+        if( i_start ) begin
+            case(curr_in_state)
+                IN_IDLE : next_in_state =  IN_REC;
+                IN_REC : next_in_state =  IN_IDLE;
+                IN_DONE : next_in_state =  IN_IDLE;
+            endcase 
+        end
+    end 
     
     always_comb begin
         next_state = IDLE;
@@ -190,10 +234,12 @@ module TrafficGenerator
     always_ff@(posedge clk, negedge reset_n) begin 
         if(~reset_n) begin
             curr_state_ff <= IDLE;
+            curr_in_state <= IN_IDLE;
             bodyCount <= '0;
         end
         else begin
             curr_state_ff <= next_state;
+            curr_in_state <= next_in_state;
             bodyCount <= bodyCounter;
         end
     end

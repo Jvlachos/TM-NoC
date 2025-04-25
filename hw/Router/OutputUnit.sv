@@ -62,11 +62,14 @@ module OutputUnit
     end
     
     always_ff@(posedge clk, negedge reset_n) begin : switch_2_downstream
-        if(~reset_n)
-            o_o2d.flit <= '0;
-        else 
-            o_o2d.flit <= s2d;
-       
+        if(~reset_n) begin
+            o_o2d.flit <=  invalid_flit();
+            o_o2d.target_port <= NONE_PORT;
+        end
+        else begin 
+            o_o2d.flit <= s2d.flit;
+            
+        end       
     end
     
 endmodule

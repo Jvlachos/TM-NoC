@@ -62,7 +62,7 @@ module Switch
     port_status = port_status_ff;
  
     for(i=0; i<NUM_OF_PORTS; i=i+1) begin
-         o_outport_req[i_r2s[i].target_port] = request_en[i] ? grant : '0;
+         o_outport_req[i_r2s[i].target_port] = request_en[i] == grant[i] ? 1  :'0;
     end
 
     for(x=0; x<NUM_OF_PORTS; x=x+1) begin

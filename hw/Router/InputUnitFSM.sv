@@ -74,15 +74,15 @@ module InputUnitFSM
                      xaddr = i_flit.head.xaddr;
                     yaddr = i_flit.head.yaddr;
           
-                    if (xaddr == router_conf.xaddr && yaddr == router_conf.yaddr)
+                    if ($unsigned(xaddr) == $unsigned(router_conf.xaddr) && $unsigned(yaddr) == $unsigned(router_conf.yaddr))
                         next_port = LOCAL_PORT;
-                    else if (xaddr > router_conf.xaddr)
+                    else if ($unsigned(xaddr) > $unsigned(router_conf.xaddr))
                         next_port = EAST_PORT;
-                    else if (xaddr < router_conf.xaddr)
+                    else if ($unsigned(xaddr) < $unsigned(router_conf.xaddr))
                         next_port = WEST_PORT;
-                    else if (yaddr > router_conf.yaddr)
+                    else if ($unsigned(yaddr) < $unsigned(router_conf.yaddr))
                         next_port = NORTH_PORT;
-                    else if (yaddr < router_conf.yaddr)
+                    else if ($unsigned(yaddr) > $unsigned(router_conf.yaddr))
                         next_port = SOUTH_PORT;
                     else
                         next_port = NONE_PORT;
