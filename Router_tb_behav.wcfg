@@ -60,6 +60,7 @@
    <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_req" type="array">
       <obj_property name="ElementShortName">switch_req[0:4]</obj_property>
       <obj_property name="ObjectShortName">switch_req[0:4]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /switch_ack" type="array">
       <obj_property name="ElementShortName">switch_ack[0:4]</obj_property>
