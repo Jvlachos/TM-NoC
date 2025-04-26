@@ -38,74 +38,45 @@ import router_pkg::*;
     
     always #(`CLK_PERIOD) clk = ~clk;
     
-    always# (`CLK_PERIOD) clk = ~clk;
+ 
     
-    integer i,j;
-    always_comb begin
-        to_router          = '{default:'0};
-        downstream_req     = '{default:'0};
-        downstream_ack     = '{default:'0};
+ 
+    
+//        TrafficGenerator  trafficGen (
+//                    .clk(clk),
+//                    .reset_n(reset),
+//                    .i_start(start),
+//                    .i_send(downstream_ack[0][0][LOCAL_PORT]),
+//                    .o_flit(s2d[0][0][LOCAL_PORT].flit),
+//                    .o_transmit(down_to_upstream_req[0][0][LOCAL_PORT]),
+//                    .i_flit(to_router[0][1][LOCAL_PORT].flit),
+//                    .i_rec_req(down_to_upstream_req[1][0][LOCAL_PORT]),
+//                    .o_rec_ack(downstream_ack[1][0][LOCAL_PORT])
+                   
+//                 );
+    
+    
+    genvar i,j;
+    generate
         for (i = 0; i < ROWS; i++) begin
             for (j = 0; j < COLUMNS; j++) begin
-                //connect LOCAL cables to traffic gen
-                to_router[i][j][LOCAL_PORT] = s2d[i][j][LOCAL_PORT].flit;
-                downstream_ack[i][j][LOCAL_PORT] = down_to_upstream_ack[i][j][LOCAL_PORT];
-                downstream_req[i][j][LOCAL_PORT] = down_to_upstream_req[i][j][LOCAL_PORT];
-                
-                // NORTH neighbor
-                if (i > 0) begin
-                    to_router[i-1][j][SOUTH_PORT] = s2d[i][j][NORTH_PORT].flit;
-                    downstream_req[i-1][j][SOUTH_PORT] = down_to_upstream_req[i][j][NORTH_PORT];
-                    downstream_ack[i-1][j][SOUTH_PORT] = down_to_upstream_ack[i][j][NORTH_PORT];
-                end
-    
-                // SOUTH neighbor
-                if (i < ROWS-1) begin
-                    to_router[i+1][j][NORTH_PORT] = s2d[i][j][SOUTH_PORT].flit;
-                    downstream_req[i+1][j][NORTH_PORT] = down_to_upstream_req[i][j][SOUTH_PORT];
-                    downstream_ack[i+1][j][NORTH_PORT] = down_to_upstream_ack[i][j][SOUTH_PORT];
-                end
-    
-                // WEST neighbor
-                if (j > 0) begin
-                    to_router[i][j-1][EAST_PORT] = s2d[i][j][WEST_PORT].flit;
-                    downstream_req[i][j-1][EAST_PORT] = down_to_upstream_req[i][j][WEST_PORT];
-                    downstream_ack[i][j-1][EAST_PORT] = down_to_upstream_ack[i][j][WEST_PORT];
-                end
-    
-                // EAST neighbor
-                if (j < COLUMNS-1) begin
-                    to_router[i][j+1][WEST_PORT] = s2d[i][j][EAST_PORT].flit;
-                    downstream_req[i][j+1][WEST_PORT] = down_to_upstream_req[i][j][EAST_PORT];
-                    downstream_ack[i][j+1][WEST_PORT] = down_to_upstream_ack[i][j][EAST_PORT];
-                end
-            end
-        end
-    end
-    
-    
-        TrafficGenerator  trafficGen (
+                TrafficGenerator #(
+                .router_conf('{xaddr: j, yaddr: i})
+                )trafficGen(
                     .clk(clk),
                     .reset_n(reset),
                     .i_start(start),
-                    .i_send(downstream_ack[0][0][LOCAL_PORT]),
-                    .o_flit(s2d[0][0][LOCAL_PORT].flit),
-                    .o_transmit(down_to_upstream_req[0][0][LOCAL_PORT]),
-                    .i_flit(to_router[0][1][LOCAL_PORT].flit),
-                    .i_rec_req(down_to_upstream_req[1][0][LOCAL_PORT]),
-                    .o_rec_ack(downstream_ack[1][0][LOCAL_PORT])
-                   
-                 );
+                    .i_send(send[i][j][LOCAL_PORT]),
+                    .o_flit(data_out[i][j][LOCAL_PORT]),
+                    .o_transmit(transmit[i][j][LOCAL_PORT]),
+                    .i_flit(s2d[i][j][LOCAL_PORT].flit),
+                    .i_rec_req(downstream_req[i][j][LOCAL_PORT]),
+                    .o_rec_ack(downstream_ack[i][j][LOCAL_PORT])
+                );
     
-    
-    genvar k,l;
-    generate
-        for (k = 0; k < ROWS; k++) begin
-            for (l = 0; l < COLUMNS; l++) begin
-             
                  
                  Router #(
-                .router_conf('{xaddr: l, yaddr: k})
+                .router_conf('{xaddr: j, yaddr: i})
                 )router(
                     .clk(clk),
                     .reset_n(reset),
@@ -172,7 +143,7 @@ import router_pkg::*;
             @(posedge clk);
         end
         
-        repeat (50) begin 
+        repeat (300) begin 
             @(posedge clk);
         end
         

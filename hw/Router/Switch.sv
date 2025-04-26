@@ -68,9 +68,10 @@ module Switch
     for(x=0; x<NUM_OF_PORTS; x=x+1) begin
           
           if (i_outport_ack[i_r2s[x].target_port]) begin
-            for(j=0; j<NUM_OF_PORTS; j=j+1) 
-                 routing_success[j] = i_outport_ack[i_r2s[x].target_port][j];
-                 
+           //$display("Got ack from port %s",i_r2s[x].target_port.name());
+           // for(j=0; j<NUM_OF_PORTS; j=j+1) 
+               //  routing_success[j] = i_outport_ack[i_r2s[x].target_port][j];
+            routing_success[x] = 1'b1;    
             port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
             port_status[x].source_port = P_ACTIVE; 
          

@@ -22,7 +22,8 @@
 
 module TrafficGenerator
     import router_pkg::*;
-  #(parameter BODY_COUNT=2  )
+  #(parameter BODY_COUNT=2,
+  parameter ROUTER_CONFIG router_conf ='{default:9999}  )
    (
     input  logic clk,
     input  logic reset_n,
@@ -73,7 +74,8 @@ module TrafficGenerator
     logic  in_fifo_full;
     logic  in_fifo_empty;
     logic  [15:0] packet_append;
-   
+    logic  is_master;
+    assign is_master = $unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr) == 0;
     
     always_ff@(posedge clk,negedge reset_n) begin
         if(~reset_n)
@@ -89,8 +91,8 @@ module TrafficGenerator
         val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
         //val.head.xaddr = packet_append[15:8];
         //val.head.yaddr = packet_append[7:0];
-        val.head.xaddr     = 8'd1;   // x = 0
-        val.head.yaddr     = 8'd0;   // y = 0
+        val.head.xaddr     = 8'd3;   // x = 0
+        val.head.yaddr     = 8'd3;   // y = 0
         
         return val;
     endfunction
@@ -161,7 +163,7 @@ module TrafficGenerator
     
     always_comb begin
         next_state = IDLE;
-        if( i_start ) begin
+        if( i_start && is_master) begin
             case(curr_state_ff)
                 IDLE : next_state =  HEAD;
                 HEAD : next_state = BODY;

@@ -34,7 +34,7 @@ module OutputUnit
     output  PORT_STATUS_t o_port_status,
     output  router_pipeline_bus_t o_o2d
     );
-    logic  [NUM_OF_PORTS-1:0]switch_ack=0;
+    logic  [NUM_OF_PORTS-1:0]switch_ack;
     GI_VEC_t oport_status_vec;
     PORT_STATUS_t oport_status;
      router_pipeline_bus_t s2d;

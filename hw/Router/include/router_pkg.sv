@@ -21,8 +21,8 @@
 
 
 package router_pkg;
-    localparam ROWS = 1;
-    localparam COLUMNS = 2;
+    localparam ROWS = 4;
+    localparam COLUMNS = 4;
     localparam NUMBER_OF_ROUTERS = ROWS * COLUMNS;
     
     localparam NUM_OF_PORTS = 5;
