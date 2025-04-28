@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1,088.894 ns"></ZoomStartTime>
-      <ZoomEndTime time="3,313.895 ns"></ZoomEndTime>
-      <Cursor1Time time="3,067.894 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="11,205.001 ns"></ZoomEndTime>
+      <Cursor1Time time="39,320.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="190"></NameColumnWidth>
-      <ValueColumnWidth column_width="136"></ValueColumnWidth>
+      <ValueColumnWidth column_width="120"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="19" />
+   <WVObjectSize size="18" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -124,9 +124,5 @@
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
       <obj_property name="label">3:0-flit</obj_property>
-   </wvobject>
-   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].trafficGen /i_flit" type="array">
-      <obj_property name="ElementShortName">i_flit</obj_property>
-      <obj_property name="ObjectShortName">i_flit</obj_property>
    </wvobject>
 </wave_config>

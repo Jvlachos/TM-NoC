@@ -49,7 +49,8 @@ module TrafficGenerator
     typedef enum logic [1:0] {
         IN_IDLE =0,
         IN_REC,
-        IN_READ
+        IN_READ,
+        IN_SENDING
     } IN_STATE_t;
     
     STATE_t curr_state_ff;
@@ -128,7 +129,7 @@ module TrafficGenerator
         end
         if($unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr)  == 3) begin
             val.head.xaddr = 8'b0;
-            val.head.yaddr = 8'b0;
+            val.head.yaddr = $unsigned(3);
         end
         return val;
     endfunction
@@ -171,6 +172,8 @@ module TrafficGenerator
         return val;
     endfunction
     
+     
+    
     sfifo #(FLIT_SIZE, $clog2(NUM_OF_FLITS)) outFIFO
     (
         .clk(clk),
@@ -212,9 +215,10 @@ module TrafficGenerator
         next_in_state = IN_IDLE;
         if( i_start ) begin
             case(curr_in_state)
-                IN_IDLE : next_in_state = i_rec_req && in_fifo_empty ? IN_REC : IN_IDLE;
+                IN_IDLE : next_in_state = i_rec_req && in_fifo_empty && fifo_empty ? IN_REC : IN_IDLE;
                 IN_REC : next_in_state =  ~in_fifo_full ? IN_REC  : IN_READ;
-                IN_READ : next_in_state = ~in_fifo_empty ? IN_READ : IN_IDLE;
+                IN_READ : next_in_state = ~in_fifo_empty ? IN_READ : IN_SENDING;
+                IN_SENDING : next_in_state = ~fifo_empty ? IN_SENDING : IDLE;
             endcase 
         end
     end 
@@ -238,6 +242,7 @@ module TrafficGenerator
                     pass_en = 1;
                     //in_fifo_read = 1;
                 end
+                IN_SENDING : pass_en = 1;
             
             endcase
         end    
@@ -290,7 +295,7 @@ module TrafficGenerator
                 BODY : begin
                     
                     if(pass_en) begin 
-                        data = gen_pass_body;
+                        data = gen_pass_body();
                         in_fifo_read = 1; 
                     end
                     else data = gen_body();
@@ -304,7 +309,11 @@ module TrafficGenerator
                    
                 end
                 TAIL : begin 
-                    data = gen_tail();
+                    if(pass_en) begin
+                        in_fifo_read = 1;
+                       // data = in_data_out;
+                    end
+                     data = gen_tail();
                     if(~fifo_full)
                         fifo_write =1;
                 end
