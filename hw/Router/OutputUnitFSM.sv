@@ -42,14 +42,16 @@ module OutputUnitFSM
     logic send_done;
     logic [$clog2(NUM_OF_PORTS)-1:0] requesting_port;
     logic found_port;
-    
+    logic [NUM_OF_PORTS-1:0] requesting_port_ff;
+    logic [NUM_OF_PORTS-1:0] req_idx;
     always_comb begin
         next_state = IDLE;
         found_port = 0;
-        requesting_port = '0;
+        req_idx = '0;
         for (int i = 0; i < NUM_OF_PORTS; i++) begin
             if (i_switch_req[i] && curr_state == IDLE) begin
-                requesting_port = i;
+                //requesting_port = i;
+                req_idx = i;
                 found_port = 1;
                 break;
             end
@@ -62,30 +64,28 @@ module OutputUnitFSM
                 default : ;
          endcase 
     end
-    
+       assign o_port_status = curr_state == IDLE ? PORT_FREE : PORT_OCCUPIED;
        always_comb begin
          activate = 0;
          o_outport_ack = 0;
-         o_port_status = PORT_STATUS_t'(PORT_FREE);
           o_downstream_req = 0;
          send_done = 0;
          o_bus_s2d = '0;
+         requesting_port = requesting_port_ff;
          case(curr_state)
                 IDLE : begin
-                    o_port_status = PORT_STATUS_t'(PORT_FREE);
+                  requesting_port = req_idx;
                 end
                 ROUTING : begin
                   assert (0) else $error("ROUTING not allowed in output");
                     
                 end
                 ACTIVE : begin
-                    o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
                    o_bus_s2d.flit = i_flit;
                     if(i_flit.tail.valid && i_flit.tail.flit_type == FLIT_TYPE_t'(TAIL_FLIT))
                         send_done = 1;
                 end
                 WAITING : begin 
-                    o_port_status = PORT_STATUS_t'(PORT_OCCUPIED);
                     o_downstream_req = 1;
                     if(i_downstream_ack) begin
                         activate = 1;
@@ -101,10 +101,13 @@ module OutputUnitFSM
     end
     
     always_ff @(posedge clk, negedge reset_n) begin
-        if(~reset_n)
+        if(~reset_n) begin
             curr_state <= IDLE;
-        else
+            requesting_port_ff <= '0;
+        end
+        else begin
+            requesting_port_ff <= requesting_port;
             curr_state <= next_state;
-        
+        end
     end
 endmodule

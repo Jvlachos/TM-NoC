@@ -38,23 +38,6 @@ import router_pkg::*;
     
     always #(`CLK_PERIOD) clk = ~clk;
     
- 
-    
- 
-    
-//        TrafficGenerator  trafficGen (
-//                    .clk(clk),
-//                    .reset_n(reset),
-//                    .i_start(start),
-//                    .i_send(downstream_ack[0][0][LOCAL_PORT]),
-//                    .o_flit(s2d[0][0][LOCAL_PORT].flit),
-//                    .o_transmit(down_to_upstream_req[0][0][LOCAL_PORT]),
-//                    .i_flit(to_router[0][1][LOCAL_PORT].flit),
-//                    .i_rec_req(down_to_upstream_req[1][0][LOCAL_PORT]),
-//                    .o_rec_ack(downstream_ack[1][0][LOCAL_PORT])
-                   
-//                 );
-    
     
     genvar i,j;
     generate
@@ -143,7 +126,7 @@ import router_pkg::*;
             @(posedge clk);
         end
         
-        repeat (300) begin 
+        repeat (1000) begin 
             @(posedge clk);
         end
         

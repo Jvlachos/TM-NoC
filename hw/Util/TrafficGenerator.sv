@@ -35,7 +35,7 @@ module TrafficGenerator
     input  logic i_rec_req, 
     output  logic o_rec_ack
     );
-    assign o_rec_ack = 1;
+    
     typedef enum logic [2:0] {
         IDLE = 0,
         HEAD,
@@ -49,7 +49,7 @@ module TrafficGenerator
     typedef enum logic [1:0] {
         IN_IDLE =0,
         IN_REC,
-        IN_DONE
+        IN_READ
     } IN_STATE_t;
     
     STATE_t curr_state_ff;
@@ -75,7 +75,9 @@ module TrafficGenerator
     logic  in_fifo_empty;
     logic  [15:0] packet_append;
     logic  is_master;
-    assign is_master = $unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr) == 0;
+    logic pass_en;
+    
+    assign is_master = $unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr) == 0 ;
     
     always_ff@(posedge clk,negedge reset_n) begin
         if(~reset_n)
@@ -84,24 +86,80 @@ module TrafficGenerator
             packet_append <= $unsigned(packet_append) +1 ;
     end
     
-    function automatic FLIT_t gen_head();
+    function automatic FLIT_t gen_pass_head();
+        FLIT_t val;
+        
+        val = in_data_out;
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+        if($unsigned(router_conf.xaddr) == COLUMNS-1 ) begin
+         if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                val.head.xaddr =$unsigned(router_conf.xaddr);
+                val.head.yaddr =$unsigned(router_conf.yaddr) + 1;
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr)-1;
+                val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            
+        end
+        
+        else if($unsigned(router_conf.xaddr) == 0) begin
+             if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                val.head.xaddr =$unsigned(router_conf.xaddr) +1;
+                val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr);
+                val.head.yaddr =$unsigned(router_conf.yaddr) +1;
+            end
+        end
+        else begin
+            if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                 val.head.xaddr =$unsigned(router_conf.xaddr) +1;
+                 val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr) -1;
+                 val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+//            val.head.xaddr =$unsigned(val.head.xaddr) + 1;
+//            val.head.yaddr = 8'b0;
+        end
+        if($unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr)  == 3) begin
+            val.head.xaddr = 8'b0;
+            val.head.yaddr = 8'b0;
+        end
+        return val;
+    endfunction
+    
+      function automatic FLIT_t gen_head();
         FLIT_t val;
         
         val.head.valid =1;
         val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
         //val.head.xaddr = packet_append[15:8];
         //val.head.yaddr = packet_append[7:0];
-        val.head.xaddr     = 8'd3;   // x = 0
-        val.head.yaddr     = 8'd3;   // y = 0
-        
+     
+         val.head.xaddr     = 8'd1;   // x = 0
+         val.head.yaddr     = 8'd0;   // y = 0
+       
         return val;
     endfunction
     
-     function automatic FLIT_t gen_body();
+     function automatic FLIT_t gen_pass_body();
+        FLIT_t val;
+        val = in_data_out;
+        val.body.data[15:8] = $unsigned(router_conf.xaddr) + $unsigned(in_data_out[15:8]);
+        val.body.data[7:0] = $unsigned(router_conf.yaddr) + $unsigned(in_data_out[7:0]);
+        return val;
+    endfunction
+    
+   function automatic FLIT_t gen_body();
         FLIT_t val;
         val.body.valid =1;
         val.body.flit_type = FLIT_TYPE_t'(BODY_FLIT);
-        val.body.data = packet_append;
+        val.body.data = '0;
         return val;
     endfunction
     
@@ -154,16 +212,40 @@ module TrafficGenerator
         next_in_state = IN_IDLE;
         if( i_start ) begin
             case(curr_in_state)
-                IN_IDLE : next_in_state =  IN_REC;
-                IN_REC : next_in_state =  IN_IDLE;
-                IN_DONE : next_in_state =  IN_IDLE;
+                IN_IDLE : next_in_state = i_rec_req && in_fifo_empty ? IN_REC : IN_IDLE;
+                IN_REC : next_in_state =  ~in_fifo_full ? IN_REC  : IN_READ;
+                IN_READ : next_in_state = ~in_fifo_empty ? IN_READ : IN_IDLE;
             endcase 
         end
     end 
     
+    
+    
+    always_comb begin
+        o_rec_ack = 0;
+       
+        in_fifo_write = 0;
+        pass_en = 0;
+        if(i_start) begin 
+            case(curr_in_state)
+                IN_IDLE : ;
+                IN_REC  : begin
+                 o_rec_ack = 1;
+                 if(i_flit.flit[FLIT_SIZE-1])
+                    in_fifo_write = 1;
+                end
+                IN_READ : begin
+                    pass_en = 1;
+                    //in_fifo_read = 1;
+                end
+            
+            endcase
+        end    
+    end 
+    
     always_comb begin
         next_state = IDLE;
-        if( i_start && is_master) begin
+        if( (i_start && is_master) || pass_en) begin
             case(curr_state_ff)
                 IDLE : next_state =  HEAD;
                 HEAD : next_state = BODY;
@@ -181,11 +263,12 @@ module TrafficGenerator
         bodyCounter = '0;
         fifo_read = 0;
         fifo_write =0;
+        in_fifo_read = 0;
         data.head.valid = 0;
         data.head.flit_type = FLIT_TYPE_t'(NONE_FLIT);
         data.head.xaddr = '0;
         data.head.yaddr = '0;
-        
+      
         o_transmit = 0;
         if( i_start ) begin
             case(curr_state_ff)
@@ -194,12 +277,24 @@ module TrafficGenerator
                     fifo_write =0;
                 end
                 HEAD : begin
-                    data = gen_head();
+                    if(pass_en) begin
+                        in_fifo_read = 1;
+                        data = gen_pass_head();
+                       // data.head.xaddr =$unsigned(in_data_out.head.xaddr) + 1;
+                    end
+                    else
+                        data = gen_head();
                     if(~fifo_full)
                         fifo_write =1;
                 end
                 BODY : begin
-                    data = gen_body();
+                    
+                    if(pass_en) begin 
+                        data = gen_pass_body;
+                        in_fifo_read = 1; 
+                    end
+                    else data = gen_body();
+                    
                     bodyCounter = $unsigned(bodyCount) + 1;
                     if($unsigned(bodyCounter) == BODY_COUNT) begin
                         bodyDone = 1'b1;

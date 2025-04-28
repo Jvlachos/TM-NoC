@@ -91,6 +91,7 @@ module Router
             .i_outport_ack(outport_ack),
             .o_outport_req(outport_req), 
             .routing_success(routing_success),
-            .o_s2o(s2o) 
+            .o_s2o(s2o) ,
+            .i_oport(oport)
         );
 endmodule

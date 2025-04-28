@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2,451.794 ns"></ZoomStartTime>
-      <ZoomEndTime time="4,695.795 ns"></ZoomEndTime>
-      <Cursor1Time time="3,840.000 ns"></Cursor1Time>
+      <ZoomStartTime time="1,088.894 ns"></ZoomStartTime>
+      <ZoomEndTime time="3,313.895 ns"></ZoomEndTime>
+      <Cursor1Time time="3,067.894 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="203"></NameColumnWidth>
-      <ValueColumnWidth column_width="104"></ValueColumnWidth>
+      <NameColumnWidth column_width="190"></NameColumnWidth>
+      <ValueColumnWidth column_width="136"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="9" />
+   <WVObjectSize size="19" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -30,30 +30,102 @@
       <obj_property name="ObjectShortName">reset</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].router /\gen_ports[0].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">0:0-flit</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[1].router /\gen_ports[4].in_inst /i_flit" type="array">
-      <obj_property name="ElementShortName">i_flit</obj_property>
-      <obj_property name="ObjectShortName">i_flit</obj_property>
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[1].router /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit[0:4]</obj_property>
+      <obj_property name="ObjectShortName">i_flit[0:4]</obj_property>
+      <obj_property name="label">0:1-flit</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[2].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">0:2-flit</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[3].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">0:3-flit</obj_property>
    </wvobject>
    <wvobject fp_name="/Router_tb/\genblk1[1].genblk1[3].router /\gen_ports[1].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">1:3-flit</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/\genblk1[2].genblk1[3].router /\gen_ports[1].in_inst /i_flit" type="array">
+   <wvobject fp_name="/Router_tb/\genblk1[1].genblk1[2].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">1:2-flit</obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/\genblk1[3].genblk1[3].trafficGen /i_flit" type="array">
+   <wvobject fp_name="/Router_tb/\genblk1[1].genblk1[1].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">1:1-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[1].genblk1[0].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">1:0-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[2].genblk1[0].router /\gen_ports[1].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">2:0-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[2].genblk1[1].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">2:1-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[2].genblk1[2].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">2:2-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[2].genblk1[3].router /\gen_ports[4].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">2:3-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[3].genblk1[3].router /\gen_ports[1].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">3:3-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[3].genblk1[2].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">3:2-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[3].genblk1[1].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">3:1-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[3].genblk1[0].router /\gen_ports[3].in_inst /i_flit" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+      <obj_property name="label">3:0-flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/\genblk1[0].genblk1[0].trafficGen /i_flit" type="array">
       <obj_property name="ElementShortName">i_flit</obj_property>
       <obj_property name="ObjectShortName">i_flit</obj_property>
    </wvobject>

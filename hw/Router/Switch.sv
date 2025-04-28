@@ -29,21 +29,25 @@ module Switch
         input  logic [NUM_OF_PORTS-1:0]i_outport_ack[NUM_OF_PORTS],
         output logic [NUM_OF_PORTS-1:0]o_outport_req[NUM_OF_PORTS],
         output logic routing_success[NUM_OF_PORTS],
-        output router_pipeline_bus_t o_s2o[NUM_OF_PORTS]
+        output router_pipeline_bus_t o_s2o[NUM_OF_PORTS],
+        input OUT_PORT_t i_oport[NUM_OF_PORTS]
     );
     integer i,j,k,x;
     SW_PORT_STATUS  [NUM_OF_PORTS-1:0] port_status= '{default: P_IDLE};
     SW_PORT_STATUS [NUM_OF_PORTS-1:0] port_status_ff;
 
+
+
    logic [4:0] grant;
    logic [4:0] request_en;
-   
+   integer y;
    always_comb begin
     request_en = '0;
     for(k=0; k<NUM_OF_PORTS; k=k+1) begin
         if(i_switch_req[k]) begin
-            if(i_r2s[k].target_port != NONE_PORT) 
-                request_en[k] = port_status[i_r2s[k].target_port].target_port == P_IDLE ? i_switch_req[k] : 0;
+            if(i_r2s[k].target_port != NONE_PORT) begin
+                request_en[k] = i_oport[i_r2s[k].target_port].port_status == PORT_FREE ? i_switch_req[k] : 0;
+            end
         end
         
      end
@@ -61,19 +65,16 @@ module Switch
     routing_success = '{default: 0};
     port_status = port_status_ff;
  
-    for(i=0; i<NUM_OF_PORTS; i=i+1) begin
-         o_outport_req[i_r2s[i].target_port] = request_en[i] == grant[i] ? 1  :'0;
+    for(i=0; i<NUM_OF_PORTS; i=i+1) begin 
+         o_outport_req[i_r2s[i].target_port][i] = (request_en[i] && grant[i]) ? 1  :'0;
     end
 
     for(x=0; x<NUM_OF_PORTS; x=x+1) begin
           
-          if (i_outport_ack[i_r2s[x].target_port]) begin
-           //$display("Got ack from port %s",i_r2s[x].target_port.name());
-           // for(j=0; j<NUM_OF_PORTS; j=j+1) 
-               //  routing_success[j] = i_outport_ack[i_r2s[x].target_port][j];
+          if (i_outport_ack[i_r2s[x].target_port][x] && port_status[i_r2s[x].target_port].target_port == P_IDLE ) begin
             routing_success[x] = 1'b1;    
-            port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
             port_status[x].source_port = P_ACTIVE; 
+            port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
          
           end 
     end
