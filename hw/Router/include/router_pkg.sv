@@ -155,4 +155,144 @@ package router_pkg;
         inval.head.flit_type = NONE_FLIT;
         return inval;
     endfunction
+    
+      function automatic FLIT_t gen_traversal_head(FLIT_t data,ROUTER_CONFIG router_conf);
+        FLIT_t val;
+        
+        val = data;
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+        if($unsigned(router_conf.xaddr) == COLUMNS-1 ) begin
+         if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                val.head.xaddr =$unsigned(router_conf.xaddr);
+                val.head.yaddr =$unsigned(router_conf.yaddr) + 1;
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr)-1;
+                val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            
+        end
+        
+        else if($unsigned(router_conf.xaddr) == 0) begin
+             if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                val.head.xaddr =$unsigned(router_conf.xaddr) +1;
+                val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr);
+                val.head.yaddr =$unsigned(router_conf.yaddr) +1;
+            end
+        end
+        else begin
+            if($unsigned(router_conf.yaddr) % 2 == 0) begin
+                 val.head.xaddr =$unsigned(router_conf.xaddr) +1;
+                 val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+            else begin
+                val.head.xaddr =$unsigned(router_conf.xaddr) -1;
+                 val.head.yaddr =$unsigned(router_conf.yaddr);
+            end
+//            val.head.xaddr =$unsigned(val.head.xaddr) + 1;
+//            val.head.yaddr = 8'b0;
+        end
+        if($unsigned(router_conf.xaddr) == 0 && $unsigned(router_conf.yaddr)  == 3) begin
+            val.head.xaddr = 8'b0;
+            val.head.yaddr = $unsigned(3);
+        end
+        return val;
+    endfunction
+    
+        
+      function automatic FLIT_t gen_head();
+        FLIT_t val;
+        
+        val.head.valid =1;
+        val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+     
+         val.head.xaddr     = 8'd1;   // x = 0
+         val.head.yaddr     = 8'd0;   // y = 0
+       
+        return val;
+    endfunction
+    
+     function automatic FLIT_t gen_pass_body(FLIT_t data,ROUTER_CONFIG router_conf);
+        FLIT_t val;
+        val = data;
+        val.body.data[15:8] = $unsigned(router_conf.xaddr) + $unsigned(data[15:8]);
+        val.body.data[7:0] = $unsigned(router_conf.yaddr) + $unsigned(data[7:0]);
+        return val;
+    endfunction
+    
+   function automatic FLIT_t gen_body(ROUTER_CONFIG router_conf);
+        FLIT_t val;
+        val.body.valid =1;
+        val.body.flit_type = FLIT_TYPE_t'(BODY_FLIT);
+        val.body.data[15:8] = $unsigned(router_conf.xaddr) ;
+        val.body.data[7:0] = $unsigned(router_conf.yaddr) ;
+        return val;
+    endfunction
+    
+    function automatic FLIT_t gen_head2addr(integer x,integer y);
+         FLIT_t val;
+        
+        val.head.valid =1;
+        val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+     
+         val.head.xaddr     =  x;   // x = 0
+         val.head.yaddr     =  y;   // y = 0
+       
+        return val;
+    endfunction
+     function automatic FLIT_t gen_tail(logic [15:0] packet_append);
+            FLIT_t val;
+         val.tail.valid =1;
+         val.tail.flit_type = FLIT_TYPE_t'(TAIL_FLIT);
+         val.tail.reserved = packet_append;
+        return val;
+    endfunction
+    
+    function print_in_info(integer in_id,integer cycle,string msg,ROUTER_CONFIG router_conf);
+        //if($unsigned(router_conf.xaddr) == 3 && $unsigned(router_conf.yaddr) ==3) begin
+        case (in_id)
+            0: $display("%s {x:%d y:%d} %s cycle : %d",msg,$unsigned(router_conf.xaddr),$unsigned(router_conf.yaddr),"LOCAL",cycle);
+            1: $display("%s {x:%d y:%d} %s cycle : %d",msg,$unsigned(router_conf.xaddr),$unsigned(router_conf.yaddr),"NORTH",cycle);
+            2: $display("%s {x:%d y:%d} %s cycle : %d",msg,$unsigned(router_conf.xaddr),$unsigned(router_conf.yaddr),"SOUTH",cycle);
+            3: $display("%s {x:%d y:%d} %s cycle : %d",msg,$unsigned(router_conf.xaddr),$unsigned(router_conf.yaddr),"EAST",cycle);
+            4: $display("%s {x:%d y:%d} %s cycle : %d",msg,$unsigned(router_conf.xaddr),$unsigned(router_conf.yaddr),"WEST",cycle);
+            
+        endcase
+       // end
+    endfunction
+    
+     function automatic FLIT_t toAll(ROUTER_CONFIG router_conf,integer x,integer y);
+        FLIT_t val;
+      
+        val.head.valid =1;
+        val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+          
+         val.head.xaddr     = x ;   // x = 0
+         val.head.yaddr     =   y;   // y = 0
+        return val;
+    endfunction
+    
+    
+    function automatic FLIT_t roundtrip(FLIT_t data);
+        FLIT_t val;
+        
+        val.head.valid =1;
+        val.head.flit_type = FLIT_TYPE_t'(HEAD_FLIT);
+        //val.head.xaddr = packet_append[15:8];
+        //val.head.yaddr = packet_append[7:0];
+     
+         val.head.xaddr     = $unsigned(data.head.xaddr) -1 ;   // x = 0
+         val.head.yaddr     = 8'd0;   // y = 0
+        return val;
+    endfunction
 endpackage

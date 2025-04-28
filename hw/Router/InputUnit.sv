@@ -22,7 +22,8 @@
 
 module InputUnit
     import router_pkg::*;
-    #(parameter ROUTER_CONFIG router_conf ='{default:9999})
+    #(parameter ROUTER_CONFIG router_conf ='{default:9999},
+      parameter integer in_id = 0)
     (
      input   clk,
     input   reset_n,
@@ -50,6 +51,9 @@ module InputUnit
     PORT_t  target_port;
     assign o_port_status = port_status;
     assign o_vec = status_vec;
+    integer cycle;
+    
+ 
     
     sfifo #(FLIT_SIZE,$clog2(NUM_OF_FLITS)) INPUT_BUFFER 
     (
@@ -78,13 +82,17 @@ module InputUnit
         .o_next_port(target_port)
     );
     
-    
+ 
      always_ff@(posedge clk, negedge reset_n) begin : bufferStatus
-          if(~reset_n)
+          if(~reset_n) begin
             status_vec.buffer_status <= PACKET_EMPTY;
+          end
           else begin
-              if(i_flit.tail.flit_type == TAIL_FLIT )
+              if(i_flit.tail.flit_type == TAIL_FLIT ) begin
                 status_vec.buffer_status <= PACKET_RECEIVED;
+                 
+
+                end
               else if(buffer_empty )
                 status_vec.buffer_status <= PACKET_EMPTY;
               else if(!buffer_empty && !buffer_full && status_vec.gstate == IDLE)
@@ -139,8 +147,10 @@ module InputUnit
                 else begin
                     o_transmit_ack <= 0;
                     port_status  <= port_status;
-                    if(status_vec.buffer_status == PACKET_RECEIVED)
+                    if(status_vec.buffer_status == PACKET_RECEIVED) begin
                         buffer_write <= 0;
+                       
+                    end 
                     else
                         buffer_write <= buffer_write;    
                     end
@@ -151,21 +161,21 @@ module InputUnit
         
     end
 
-  
+    always_ff @(posedge clk, negedge reset_n) begin : cycle_count
+        if(~reset_n) cycle = 0;
+        else cycle = cycle + 1;
+    end
 
    
     always_ff @(posedge clk, negedge reset_n) begin : f2r
         if(~reset_n) begin
             fetch2route.flit.head.flit_type = NONE_FLIT;
-           // fetch2route.target_port = NONE_PORT;
          end   
         else if(fetch_en) begin
             fetch2route.flit <= buffer_odata;
-           // fetch2route.target_port <= target_port;
         end
         else begin
             fetch2route.flit <= fetch2route.flit;
-           // fetch2route.target_port <= fetch2route.target_port;
         end
     end
     assign o_r2s.target_port = target_port ;

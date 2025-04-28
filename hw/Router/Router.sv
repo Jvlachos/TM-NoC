@@ -48,7 +48,7 @@ module Router
     genvar i;
     generate
         for (i = 0; i < NUM_OF_PORTS; i++) begin : gen_ports
-            InputUnit  #(.router_conf(router_conf)) in_inst 
+            InputUnit  #(.router_conf(router_conf),.in_id(i)) in_inst 
             (
                 .clk(clk),
                 .reset_n(reset_n),
