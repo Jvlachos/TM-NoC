@@ -73,18 +73,21 @@ module Switch
           
           if (i_outport_ack[i_r2s[x].target_port][x] && port_status[i_r2s[x].target_port].target_port == P_IDLE ) begin
             routing_success[x] = 1'b1;    
-            port_status[x].source_port = P_ACTIVE; 
+           // port_status[x].source_port = P_ACTIVE; 
             port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
-         
+            port_status[i_r2s[x].target_port].pair = x;
           end 
     end
    end
-    integer l;
+    integer y,l;
   
   always_ff @(posedge clk, negedge rst_n) begin
     if(~rst_n) begin
         o_s2o <= '{default: 0};
-        port_status_ff <=  '{default: P_IDLE};
+         for(y=0; y<NUM_OF_PORTS; y=y+1) begin
+            port_status_ff[y].target_port <=  P_IDLE;
+            port_status_ff[y].pair <= NONE_PORT;
+         end
        
     end
     else    begin 
@@ -93,53 +96,14 @@ module Switch
         for(l=0; l<NUM_OF_PORTS; l=l+1) begin
          if(i_r2s[l].flit.tail.flit_type == TAIL_FLIT) begin
             port_status_ff[i_r2s[l].target_port].target_port <= P_IDLE;
-            port_status_ff[l].source_port <= P_IDLE; 
-       
+           // port_status_ff[l].source_port <= P_IDLE; 
+            port_status_ff[i_r2s[l].target_port].pair = NONE_PORT;
           end
+          
+          if(port_status[l].target_port == P_ACTIVE) begin
+            o_s2o[l] <= i_r2s[port_status[l].pair];
+          end
+          else o_s2o[l] = invalid_flit();
         end
-        if(port_status[0].target_port == P_ACTIVE) begin
-            if(port_status[0].source_port == P_ACTIVE)      o_s2o[0] <= i_r2s[0];
-            else if(port_status[1].source_port == P_ACTIVE) o_s2o[0] <= i_r2s[1];
-            else if(port_status[2].source_port == P_ACTIVE) o_s2o[0] <= i_r2s[2];
-            else if(port_status[3].source_port == P_ACTIVE) o_s2o[0] <= i_r2s[3];
-            else if(port_status[4].source_port == P_ACTIVE) o_s2o[0] <= i_r2s[4];
-            else o_s2o[0] <= o_s2o[0];
-            
-        end else o_s2o[0] <= '0;
-        if(port_status[1].target_port == P_ACTIVE) begin
-           if(port_status[0].source_port == P_ACTIVE)       o_s2o[1] <= i_r2s[0];
-            else if(port_status[1].source_port == P_ACTIVE) o_s2o[1] <= i_r2s[1];
-            else if(port_status[2].source_port == P_ACTIVE) o_s2o[1] <= i_r2s[2];
-            else if(port_status[3].source_port == P_ACTIVE) o_s2o[1] <= i_r2s[3];
-            else if(port_status[4].source_port == P_ACTIVE) o_s2o[1] <= i_r2s[4];
-            else o_s2o[1] <= o_s2o[1];
-        end else o_s2o[1] <= '0;
-        if(port_status[2].target_port == P_ACTIVE) begin
-            if(port_status[0].source_port == P_ACTIVE)      o_s2o[2] <= i_r2s[0];
-            else if(port_status[1].source_port == P_ACTIVE) o_s2o[2] <= i_r2s[1];
-            else if(port_status[2].source_port == P_ACTIVE) o_s2o[2] <= i_r2s[2];
-            else if(port_status[3].source_port == P_ACTIVE) o_s2o[2] <= i_r2s[3];
-            else if(port_status[4].source_port == P_ACTIVE) o_s2o[2] <= i_r2s[4];
-            else o_s2o[2] <= o_s2o[2];
-        end else o_s2o[2] <= '0;
-        if(port_status[3].target_port == P_ACTIVE) begin
-              if(port_status[0].source_port == P_ACTIVE)    o_s2o[3] <= i_r2s[0];
-            else if(port_status[1].source_port == P_ACTIVE) o_s2o[3] <= i_r2s[1];
-            else if(port_status[2].source_port == P_ACTIVE) o_s2o[3] <= i_r2s[2];
-            else if(port_status[3].source_port == P_ACTIVE) o_s2o[3] <= i_r2s[3];
-            else if(port_status[4].source_port == P_ACTIVE) o_s2o[3] <= i_r2s[4];
-            else o_s2o[3] <= o_s2o[3];
-        end else o_s2o[3] <= '0;
-        if(port_status[4].target_port == P_ACTIVE) begin
-           if(port_status[0].source_port == P_ACTIVE)       o_s2o[4] <= i_r2s[0];
-            else if(port_status[1].source_port == P_ACTIVE) o_s2o[4] <= i_r2s[1];
-            else if(port_status[2].source_port == P_ACTIVE) o_s2o[4] <= i_r2s[2];
-            else if(port_status[3].source_port == P_ACTIVE) o_s2o[4] <= i_r2s[3];
-            else if(port_status[4].source_port == P_ACTIVE) o_s2o[4] <= i_r2s[4];
-            else o_s2o[4] <= o_s2o[4];
-        end else o_s2o[4] <= '0;
-        
-    end
-    //else o_s2o <= o_s2o;
   end
 endmodule

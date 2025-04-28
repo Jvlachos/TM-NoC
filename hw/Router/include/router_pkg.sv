@@ -63,8 +63,9 @@ package router_pkg;
     } P_STATUS;
     
     typedef struct packed{
-        P_STATUS source_port;
+        
         P_STATUS target_port;
+        PORT_t   pair;
     } SW_PORT_STATUS;
     typedef struct packed {
         logic  valid;

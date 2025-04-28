@@ -126,7 +126,7 @@ import router_pkg::*;
             @(posedge clk);
         end
         
-        repeat (1000) begin 
+        repeat (1000000) begin 
             @(posedge clk);
         end
         

@@ -77,7 +77,7 @@ module TrafficGenerator
     logic  [15:0] packet_append;
     logic  is_master;
     logic pass_en;
-    integer repetitions = 10;
+    integer repetitions = 1000;
     integer rep;
     integer rep_ff;
     integer cycle;
@@ -171,7 +171,7 @@ module TrafficGenerator
         next_state = IDLE;
         rep = rep_ff;
         if(rep < repetitions) begin
-        if( (i_start ) )begin
+        if( (i_start && is_master) )begin
             case(curr_state_ff)
                 IDLE : next_state =  HEAD;
                 HEAD : next_state = BODY;
@@ -187,7 +187,8 @@ module TrafficGenerator
         end
     end 
     
-   
+    integer xall,yall;
+    integer xall_ff,yall_ff;
     
     always_comb begin 
         bodyDone   = 1'b0;
@@ -199,24 +200,32 @@ module TrafficGenerator
         data.head.flit_type = FLIT_TYPE_t'(NONE_FLIT);
         data.head.xaddr = '0;
         data.head.yaddr = '0;
-       
+        xall = xall_ff;
+        yall = yall_ff;
         o_transmit = 0;
         if( i_start ) begin
-            
+            if(xall == 4) begin
+                xall = 0;
+                yall = yall_ff +1;
+            end
+            if(yall == 4) yall = 0;
             case(curr_state_ff)
                 IDLE : begin
                     fifo_read = 0;
                     fifo_write =0;
                 end
                 HEAD : begin
-                 
+                   
                     if(pass_en) begin
                         in_fifo_read = 1;
                        // data = gen_traversal_head(in_data_out,router_conf);
                        //   data = roundtrip(in_data_out);
                     end
-                    else
-                        data = gen_head2addr( $urandom_range(3,0), $urandom_range(3,0));
+                    else begin
+                        
+                        data = gen_head2addr( 1, 0);
+                         xall = xall_ff + 1;
+                    end
                        // data = toAll(router_conf,c);
                     if(~fifo_full)
                         fifo_write =1;
@@ -274,7 +283,8 @@ module TrafficGenerator
             bodyCount <= '0;
             rep_ff <= 0;
             cycle <= 0;
-            
+            xall_ff<=0;
+            yall_ff <=0;
         end
         else begin
             curr_state_ff <= next_state;
@@ -282,7 +292,8 @@ module TrafficGenerator
             bodyCount <= bodyCounter;
             rep_ff <= rep;
             cycle <= cycle +  1;
-            
+            xall_ff <= xall;
+            yall_ff <= yall;
         end
     end
     
