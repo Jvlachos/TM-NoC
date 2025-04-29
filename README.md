@@ -22,7 +22,7 @@ All evaluations are performed on a 4×4 mesh using Vivado simulation.
 
 For detailed design explanation, implementation decisions, and evaluation results, see the full paper:
 
-📄 [TM_NoC_IEEE.pdf](TM-NoC/doc/TM_NoC_IEEE.pdf)
+📄 [TM_NoC_IEEE.pdf](doc/TM_NoC_IEEE.pdf)
 
 ## Context
 
