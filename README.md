@@ -18,6 +18,12 @@ This project implements a custom **2D mesh Network-on-Chip (NoC)** architecture 
 
 All evaluations are performed on a 4×4 mesh using Vivado simulation.
 
+## Documentation
+
+For detailed design explanation, implementation decisions, and evaluation results, see the full paper:
+
+📄 [TM_NoC_IEEE.pdf](TM-NoC/doc/TM_NoC_IEEE.pdf)
+
 ## Context
 
 This project was developed as part of the course **02211 Research Topics in Computer Architecture**, Spring 2025, at **DTU (Technical University of Denmark)**.
