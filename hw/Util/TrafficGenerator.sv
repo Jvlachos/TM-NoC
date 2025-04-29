@@ -171,7 +171,7 @@ module TrafficGenerator
         next_state = IDLE;
         rep = rep_ff;
         if(rep < repetitions) begin
-        if( (i_start && is_master) )begin
+        if( (i_start ) )begin
             case(curr_state_ff)
                 IDLE : next_state =  HEAD;
                 HEAD : next_state = BODY;
@@ -223,7 +223,7 @@ module TrafficGenerator
                     end
                     else begin
                         
-                        data = gen_head2addr( 1, 0);
+                        data = gen_head2addr( $unsigned(xall), $unsigned(yall));
                          xall = xall_ff + 1;
                     end
                        // data = toAll(router_conf,c);

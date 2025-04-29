@@ -73,7 +73,6 @@ module Switch
           
           if (i_outport_ack[i_r2s[x].target_port][x] && port_status[i_r2s[x].target_port].target_port == P_IDLE ) begin
             routing_success[x] = 1'b1;    
-           // port_status[x].source_port = P_ACTIVE; 
             port_status[i_r2s[x].target_port].target_port = P_ACTIVE;
             port_status[i_r2s[x].target_port].pair = x;
           end 
@@ -96,14 +95,13 @@ module Switch
         for(l=0; l<NUM_OF_PORTS; l=l+1) begin
          if(i_r2s[l].flit.tail.flit_type == TAIL_FLIT) begin
             port_status_ff[i_r2s[l].target_port].target_port <= P_IDLE;
-           // port_status_ff[l].source_port <= P_IDLE; 
-            port_status_ff[i_r2s[l].target_port].pair = NONE_PORT;
+            port_status_ff[i_r2s[l].target_port].pair <= NONE_PORT;
           end
           
           if(port_status[l].target_port == P_ACTIVE) begin
             o_s2o[l] <= i_r2s[port_status[l].pair];
           end
-          else o_s2o[l] = invalid_flit();
+          else o_s2o[l] <= invalid_flit();
         end
   end
 endmodule
