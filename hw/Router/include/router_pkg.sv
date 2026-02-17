@@ -118,9 +118,9 @@ package router_pkg;
     
     typedef struct packed {
         GLOBAL_STATE_t gstate;
-        ROUTE_t route;
+        //ROUTE_t route;
         BUFFER_STATUS_t buffer_status;
-        logic [3:0] flit_ptr;
+        //logic [3:0] flit_ptr;
     } GRP_VEC_t;
     
      typedef struct packed {
@@ -156,6 +156,8 @@ package router_pkg;
         inval.head.flit_type = NONE_FLIT;
         return inval;
     endfunction
+    
+    
     
       function automatic FLIT_t gen_traversal_head(FLIT_t data,ROUTER_CONFIG router_conf);
         FLIT_t val;
@@ -227,12 +229,31 @@ package router_pkg;
         return val;
     endfunction
     
+       function automatic FLIT_t gen_pass_tail(FLIT_t data,ROUTER_CONFIG router_conf);
+        FLIT_t val;
+        val.tail.valid = 1;
+        val.tail.flit_type = TAIL_FLIT;
+        val.tail.reserved[15:8] = $unsigned(router_conf.xaddr) ;
+        val.tail.reserved[7:0] = $unsigned(router_conf.yaddr) ;
+        return val;
+    endfunction
+    
    function automatic FLIT_t gen_body(ROUTER_CONFIG router_conf);
         FLIT_t val;
         val.body.valid =1;
         val.body.flit_type = FLIT_TYPE_t'(BODY_FLIT);
         val.body.data[15:8] = $unsigned(router_conf.xaddr) ;
         val.body.data[7:0] = $unsigned(router_conf.yaddr) ;
+        return val;
+    endfunction
+    
+    
+       function automatic FLIT_t gen_empty_body();
+        FLIT_t val;
+        val.body.valid =1;
+        val.body.flit_type = FLIT_TYPE_t'(BODY_FLIT);
+        val.body.data[15:8] = '0;
+        val.body.data[7:0] = '0 ;
         return val;
     endfunction
     
@@ -256,6 +277,15 @@ package router_pkg;
          val.tail.reserved = packet_append;
         return val;
     endfunction
+    
+     function automatic FLIT_t gen_empty_tail();
+            FLIT_t val;
+         val.tail.valid =1;
+         val.tail.flit_type = FLIT_TYPE_t'(TAIL_FLIT);
+         val.tail.reserved = '0;
+        return val;
+    endfunction
+    
     
     function print_in_info(integer in_id,integer cycle,string msg,ROUTER_CONFIG router_conf);
         //if($unsigned(router_conf.xaddr) == 3 && $unsigned(router_conf.yaddr) ==3) begin

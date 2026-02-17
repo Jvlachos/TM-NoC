@@ -44,7 +44,7 @@ module InputUnit
     logic buffer_empty;
     logic buffer_write;
     logic fetch_en;
-    logic buffer_read;
+   // logic buffer_read;
     logic sent;
     GRP_VEC_t status_vec; 
     PORT_STATUS_t  port_status;
@@ -169,7 +169,8 @@ module InputUnit
    
     always_ff @(posedge clk, negedge reset_n) begin : f2r
         if(~reset_n) begin
-            fetch2route.flit.head.flit_type = NONE_FLIT;
+            fetch2route.flit.head.flit_type <= NONE_FLIT;
+            fetch2route.target_port <= NONE_PORT;
          end   
         else if(fetch_en) begin
             fetch2route.flit <= buffer_odata;
