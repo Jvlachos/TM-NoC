@@ -8,7 +8,7 @@ class trans_generator;
     mailbox gen2driv;
     int repeat_count;
     event ended;
-    FLIT_TYPE_t current_type = HEAD_FLIT;
+
     
   function new(mailbox gen2driv,event ended);
     //getting the mailbox handle from env
@@ -17,19 +17,13 @@ class trans_generator;
   endfunction
     
     task main();
-
-        FLIT_TYPE_t flit_sequence[NUM_OF_FLITS] = '{HEAD_FLIT, BODY_FLIT, BODY_FLIT, TAIL_FLIT};  // desired order
-        int rep;  
-    
-        for (rep = 0; rep < repeat_count; rep++) begin
-            foreach(flit_sequence[i]) begin
-                transaction trans = new();
-    
-                trans.flit_type = flit_sequence[i];
-                assert(trans.randomize()) else $fatal("Randomization failed");
-    
-                gen2driv.put(trans);
-            end
+       repeat(repeat_count) begin 
+           trans = new();       
+           assert(trans.randomize()) else $fatal("Randomization failed");
+//                if(trans.flit_type == HEAD_FLIT)
+//                    $display("[Transaction] : Transaction with x:%d, y:%d\n",unsigned'(trans.flit.head.xaddr),unsigned'(trans.flit.head.yaddr));
+            gen2driv.put(trans);
+           
         end
     
         -> ended;

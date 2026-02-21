@@ -21,7 +21,7 @@
 
 `define CLK_PERIOD 20
 import router_pkg::*;
-
+//`include "tb/RouterTests/basic_router_test.sv"
 
 module Router_tb
 

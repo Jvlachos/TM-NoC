@@ -32,6 +32,7 @@ class environment;
     task post_test();
         wait(gen_ended.triggered);
         wait(gen.repeat_count == driv.no_transactions);
+        wait(driv.pending_q.size()==0);
     endtask 
     
     task run();

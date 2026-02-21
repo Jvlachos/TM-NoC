@@ -190,12 +190,14 @@ module TrafficGenerator
        o_tb_flit_ack = 0;
        unique case(curr_out_state)
         OUT_IDLE: begin
-            
+//            if(i_tb_flit_request && in_fifo_empty)
+//                o_tb_flit_ack = 1;
         end
         OUT_RECEIVING : begin
-            if(~fifo_full) begin
+        o_tb_flit_ack = 1;
+            if(~fifo_full && i_flit_from_tb.flit[FLIT_SIZE-1]) begin
                 fifo_write = 1;
-                o_tb_flit_ack = 1;
+                
             end
         end
         OUT_SENDING : begin

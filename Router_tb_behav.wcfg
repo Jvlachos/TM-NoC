@@ -6,21 +6,23 @@
       <db_ref path="Router_tb_behav.wdb" id="1">
          <top_modules>
             <top_module name="Router_tb" />
+            <top_module name="\$unit_arbiter_sv_1657087257 " />
             <top_module name="glbl" />
             <top_module name="router_pkg" />
+            <top_module name="std" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,370.814 ns"></ZoomEndTime>
-      <Cursor1Time time="480.000 ns"></Cursor1Time>
+      <ZoomEndTime time="3,796.155 ns"></ZoomEndTime>
+      <Cursor1Time time="425.474 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="120"></NameColumnWidth>
-      <ValueColumnWidth column_width="218"></ValueColumnWidth>
+      <ValueColumnWidth column_width="138"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="4" />
+   <WVObjectSize size="48" />
    <wvobject fp_name="/Router_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -32,9 +34,187 @@
    <wvobject fp_name="/Router_tb/dut/\genblk1[0].genblk1[0].trafficGen /i_flit_from_tb" type="array">
       <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
       <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
-   <wvobject fp_name="/Router_tb/test_flit" type="array">
-      <obj_property name="ElementShortName">test_flit</obj_property>
-      <obj_property name="ObjectShortName">test_flit</obj_property>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[0].genblk1[1].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[0].genblk1[2].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[0].genblk1[3].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[1].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[2].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[3].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[2].genblk1[0].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[2].genblk1[1].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[2].genblk1[2].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[2].genblk1[3].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[3].genblk1[0].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[3].genblk1[1].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[3].genblk1[2].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[3].genblk1[3].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_start" type="logic">
+      <obj_property name="ElementShortName">i_start</obj_property>
+      <obj_property name="ObjectShortName">i_start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_flit_from_tb" type="array">
+      <obj_property name="ElementShortName">i_flit_from_tb</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_tb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_tb_flit_request" type="logic">
+      <obj_property name="ElementShortName">i_tb_flit_request</obj_property>
+      <obj_property name="ObjectShortName">i_tb_flit_request</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /o_tb_flit_ack" type="logic">
+      <obj_property name="ElementShortName">o_tb_flit_ack</obj_property>
+      <obj_property name="ObjectShortName">o_tb_flit_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_send" type="logic">
+      <obj_property name="ElementShortName">i_send</obj_property>
+      <obj_property name="ObjectShortName">i_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /o_flit" type="array">
+      <obj_property name="ElementShortName">o_flit</obj_property>
+      <obj_property name="ObjectShortName">o_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /o_transmit" type="logic">
+      <obj_property name="ElementShortName">o_transmit</obj_property>
+      <obj_property name="ObjectShortName">o_transmit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_flit_from_router" type="array">
+      <obj_property name="ElementShortName">i_flit_from_router</obj_property>
+      <obj_property name="ObjectShortName">i_flit_from_router</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /i_rec_req" type="logic">
+      <obj_property name="ElementShortName">i_rec_req</obj_property>
+      <obj_property name="ObjectShortName">i_rec_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /o_rec_ack" type="logic">
+      <obj_property name="ElementShortName">o_rec_ack</obj_property>
+      <obj_property name="ObjectShortName">o_rec_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /curr_out_state" type="array">
+      <obj_property name="ElementShortName">curr_out_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">curr_out_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /next_out_state" type="array">
+      <obj_property name="ElementShortName">next_out_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">next_out_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /curr_in_state" type="array">
+      <obj_property name="ElementShortName">curr_in_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">curr_in_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /next_in_state" type="array">
+      <obj_property name="ElementShortName">next_in_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">next_in_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /data" type="array">
+      <obj_property name="ElementShortName">data</obj_property>
+      <obj_property name="ObjectShortName">data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /data_out" type="array">
+      <obj_property name="ElementShortName">data_out</obj_property>
+      <obj_property name="ObjectShortName">data_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /in_data_out" type="array">
+      <obj_property name="ElementShortName">in_data_out</obj_property>
+      <obj_property name="ObjectShortName">in_data_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /fifo_write" type="logic">
+      <obj_property name="ElementShortName">fifo_write</obj_property>
+      <obj_property name="ObjectShortName">fifo_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /fifo_read" type="logic">
+      <obj_property name="ElementShortName">fifo_read</obj_property>
+      <obj_property name="ObjectShortName">fifo_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /fifo_full" type="logic">
+      <obj_property name="ElementShortName">fifo_full</obj_property>
+      <obj_property name="ObjectShortName">fifo_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /fifo_empty" type="logic">
+      <obj_property name="ElementShortName">fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /in_fifo_write" type="logic">
+      <obj_property name="ElementShortName">in_fifo_write</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /in_fifo_read" type="logic">
+      <obj_property name="ElementShortName">in_fifo_read</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /in_fifo_full" type="logic">
+      <obj_property name="ElementShortName">in_fifo_full</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /in_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">in_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">in_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /pass_en" type="logic">
+      <obj_property name="ElementShortName">pass_en</obj_property>
+      <obj_property name="ObjectShortName">pass_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /received" type="array">
+      <obj_property name="ElementShortName">received[31:0]</obj_property>
+      <obj_property name="ObjectShortName">received[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /BODY_COUNT" type="array">
+      <obj_property name="ElementShortName">BODY_COUNT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">BODY_COUNT[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[1].genblk1[0].trafficGen /router_conf" type="array">
+      <obj_property name="ElementShortName">router_conf</obj_property>
+      <obj_property name="ObjectShortName">router_conf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Router_tb/dut/\genblk1[2].genblk1[0].trafficGen /outFIFO/mem" type="array">
+      <obj_property name="ElementShortName">mem[3:0][18:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[3:0][18:0]</obj_property>
    </wvobject>
 </wave_config>
