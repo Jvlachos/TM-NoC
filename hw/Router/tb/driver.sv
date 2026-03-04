@@ -4,10 +4,10 @@
 import router_pkg::*;
 
 class driver;
-    virtual TbBusInt  tbBusVif;
+    virtual TbBusInt.DRIVER tbBusVif;
     mailbox gen2driv;
     int no_transactions;
-    `define DRIV_IF tbBusVif.DRIVER.driver_cb
+    `define DRIV_IF tbBusVif.driver_cb
     transaction pending_q[$];
     
     function new(virtual TbBusInt tbBusVif, mailbox gen2driv);
@@ -52,11 +52,11 @@ class driver;
 //                        $display("[Driver] Got TAIL\n");
 //                endcase
 //             end
-             @(posedge tbBusVif.DRIVER.clk);
+              @(posedge tbBusVif.clk);
              
-             `DRIV_IF.tb_flit_request[x][y] <= 1;
-             `DRIV_IF.out_addrs[x][y].xaddr <= x;
-             `DRIV_IF.out_addrs[x][y].yaddr <= y;
+//             `DRIV_IF.tb_flit_request[x][y] <= 1;
+//             `DRIV_IF.out_addrs[x][y].xaddr <= x;
+//             `DRIV_IF.out_addrs[x][y].yaddr <= y;
              
              no_transactions ++;
          end
@@ -66,11 +66,17 @@ class driver;
     task drive_packet_thread(transaction trans);
        int x = unsigned'(trans.tg_xaddr);
        int y = unsigned'(trans.tg_yaddr);
-       @(posedge tbBusVif.DRIVER.clk);
+       @(posedge tbBusVif.clk);
        foreach(trans.flits[j]) begin
-        `DRIV_IF.flits[x][y] <= trans.flits[j];
-         @(posedge tbBusVif.DRIVER.clk);
+         //$display("driving %h to (%d,%d)",trans.flits[j].flit,x,y);
+        `DRIV_IF.flits[y][x] <= trans.flits[j];
+         @(posedge tbBusVif.clk);
        end
+       `DRIV_IF.flits[y][x] <= '0;
+       `DRIV_IF.tb_flit_request[y][x] <= 0;
+       `DRIV_IF.out_addrs[y][x].xaddr <= 0;
+       `DRIV_IF.out_addrs[y][x].yaddr <= 0;
+       
     endtask
     
     
@@ -79,34 +85,36 @@ class driver;
        int x,y;                                               
        logic ack_seen[ROWS][COLUMNS];
        forever begin
-        @(posedge tbBusVif.DRIVER.clk);
-        
-
-        
+        @(posedge tbBusVif.clk);
         foreach(pending_q[i]) begin
             trans = pending_q[i];
             x = unsigned'(trans.tg_xaddr);
             y = unsigned'(trans.tg_yaddr);
+             
+            `DRIV_IF.tb_flit_request[y][x] <= 1;
+            `DRIV_IF.out_addrs[y][x].xaddr <= x;
+            `DRIV_IF.out_addrs[y][x].yaddr <= y;
             //$display("[Driver] :Pending  x :%d, y :%d\n", x, y);
-            if (tbBusVif.tb_flit_ack[x][y] && !ack_seen[x][y]) begin
+            if (`DRIV_IF.tb_flit_ack[y][x] && !ack_seen[y][x]) begin
                 trans.flit_ack <= 1;
-                ack_seen[x][y] = 1;
-                $display("[Driver] :Got ack from x :%d, y :%d\n", x, y);
-                pending_q.delete(i);
+                ack_seen[y][x] = 1;
+                //$display("[Driver] :Got ack from x :%d, y :%d\n", x, y);
 
-                fork  
-                    drive_packet_thread(trans);
-                join_none
+                pending_q.delete(i);              
+                drive_packet_thread(trans);
+
+
+                
             end
-        end
-           for(int k= 0; k < ROWS; k++)
+            for(int k= 0; k < ROWS; k++)
             for(int x = 0; x<COLUMNS; x++) begin
-                if (!tbBusVif.tb_flit_ack[k][x]) begin
+                if (!`DRIV_IF.tb_flit_ack[k][x]) begin
                     ack_seen[k][x] = 0;
                     //$display("ACK detected at %0d,%0d", k, x);
-                end
-        
+                end    
             end
+         end
+      
         
        end
     endtask

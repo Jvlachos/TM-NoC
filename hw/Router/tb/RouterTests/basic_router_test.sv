@@ -6,7 +6,7 @@ class basic_router_test;
     function new(virtual TbBusInt tbVif);
         this.intf = tbVif;
         env = new (intf);
-        env.gen.repeat_count = 10;
+        env.gen.repeat_count = 1000;
     endfunction
     
     task run;

@@ -4,6 +4,7 @@ import router_pkg::*;
 class transaction;
    FLIT_t flits[NUM_OF_FLITS];
    
+   PACKET_t out_packet;
    ROUTER_CONFIG out_addr;
    ROUTER_CONFIG in_addr;
    rand logic[$clog2(ROWS)-1 :0] xaddr;
@@ -61,7 +62,7 @@ class transaction;
         
         flits[3].tail.valid = 1;
         flits[3].tail.flit_type = TAIL_FLIT;
-        $display("[Transaction]: target x:%0d,y:%0d",tg_xaddr,tg_yaddr); 
+        $display("[Transaction]: target x:%0d,y:%0d head: (%d,%d)",tg_xaddr,tg_yaddr,flits[0].head.xaddr,flits[0].head.yaddr); 
    endfunction
    
 endclass
