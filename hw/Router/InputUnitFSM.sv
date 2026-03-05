@@ -27,12 +27,9 @@ module InputUnitFSM
     input clk,
     input reset_n,
     input FLIT_t i_flit,
-    input logic i_switch_ack,
-    input GLOBAL_STATE_t  i_outstate,
     input logic routing_success,
     output GLOBAL_STATE_t o_gstate,
     output logic o_switch_req,
-    output ROUTE_t o_route,
     output logic o_packet_done,
     output PORT_t o_next_port
     );
@@ -58,7 +55,6 @@ module InputUnitFSM
     assign o_packet_done = send_done;
     integer xaddr, yaddr;
     always_comb begin
-        o_route = {1'b1,{NUM_OF_PORTS_BITS-1{1'b0}}}; //invalid  1msb 0000lsbs
         send_done = 0;
         xaddr=0;
         yaddr=0;

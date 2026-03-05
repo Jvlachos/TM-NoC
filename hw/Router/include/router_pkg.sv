@@ -21,8 +21,8 @@
 
 
 package router_pkg;
-    localparam ROWS = 4;
-    localparam COLUMNS = 4;
+    localparam ROWS = 1;
+    localparam COLUMNS = 1;
     localparam NUMBER_OF_ROUTERS = ROWS * COLUMNS;
     
     localparam NUM_OF_PORTS = 5;
@@ -147,8 +147,6 @@ package router_pkg;
     
      typedef struct packed {
         PORT_STATUS_t port_status;
-        PORT_ADDR_t   port_addr;
-        GI_VEC_t     port_vec;
     } OUT_PORT_t;
      
     function automatic FLIT_t invalid_flit();

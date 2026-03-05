@@ -30,7 +30,6 @@ module OutputUnit
     input   logic  [NUM_OF_PORTS-1:0]i_switch_request,
     output  logic  [NUM_OF_PORTS-1:0]o_outport_ack,
     output  logic  o_downstream_req,
-    output  GI_VEC_t o_vec,
     output  PORT_STATUS_t o_port_status,
     output  router_pipeline_bus_t o_o2d
     );

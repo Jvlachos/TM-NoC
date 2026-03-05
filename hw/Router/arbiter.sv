@@ -82,6 +82,7 @@ module arbiter(
 			else if (req[2]) grant = 5'b00100;
 			else if (req[3]) grant = 5'b01000;
 			else grant = 5'b00000;
+	   default: grant = 5'b00000;
 	endcase // case(req)
 end
 endmodule

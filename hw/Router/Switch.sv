@@ -32,7 +32,7 @@ module Switch
         output router_pipeline_bus_t o_s2o[NUM_OF_PORTS],
         input OUT_PORT_t i_oport[NUM_OF_PORTS]
     );
-    integer i,j,k,x;
+    integer i,j,k,x,y,l;
     SW_PORT_STATUS  [NUM_OF_PORTS-1:0] port_status= '{default: P_IDLE};
     SW_PORT_STATUS [NUM_OF_PORTS-1:0] port_status_ff;
 
@@ -40,7 +40,6 @@ module Switch
 
    logic [4:0] grant;
    logic [4:0] request_en;
-   integer y;
    always_comb begin
     request_en = '0;
     for(k=0; k<NUM_OF_PORTS; k=k+1) begin
@@ -78,7 +77,6 @@ module Switch
           end 
     end
    end
-    integer y,l;
   
   always_ff @(posedge clk, negedge rst_n) begin
     if(~rst_n) begin
