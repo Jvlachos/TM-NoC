@@ -36,20 +36,22 @@ module TrafficGenerator
     output logic o_transmit,
     input FLIT_t i_flit_from_router,
     input  logic i_rec_req, 
-    output  logic o_rec_ack
+    output  logic o_rec_ack,
+    output  PACKET_t o_packet_to_tb,
+    output  logic    o_packet_done
     );
     
     typedef enum logic [2:0] {
         OUT_IDLE = 0,
         OUT_RECEIVING,
+        OUT_REQUESTING,
         OUT_SENDING
     } STATE_t; 
     
     typedef enum logic [1:0] {
         IN_IDLE =0,
         IN_REC,
-        IN_READ,
-        IN_SENDING
+        IN_READ
     } IN_STATE_t;
     
     STATE_t curr_out_state;
@@ -72,10 +74,10 @@ module TrafficGenerator
     logic  in_fifo_full;
     logic  in_fifo_empty;
     logic pass_en;
-
+    int packet_idx;
+    int packet_idx_mod;
     
-
-
+    assign packet_idx_mod = packet_idx % NUM_OF_FLITS;
     sfifo #(FLIT_SIZE, $clog2(NUM_OF_FLITS)) outFIFO
     (
         .clk(clk),
@@ -102,14 +104,59 @@ module TrafficGenerator
     );
     
     always_ff@(posedge clk, negedge reset_n) begin
-        if(~reset_n)
+        if(~reset_n) begin
             o_flit <= '0;
-        else begin
-            if(fifo_read)
-                o_flit <= data_out;
-            else
-                o_flit <= '0;
+            o_packet_to_tb <= '0;
+            packet_idx <= 0;
+            o_packet_done  <= 0;
         end
+        else begin
+            if(fifo_read) o_flit <= data_out;
+            else          o_flit <= '0;
+            
+            if(in_fifo_read) begin
+                unique case(packet_idx_mod)
+                    0 : begin
+                        o_packet_to_tb.head <= in_data_out;
+                        o_packet_to_tb.body1 <= '0;
+                        o_packet_to_tb.body2 <= '0;
+                        o_packet_to_tb.tail  <= '0;
+                        o_packet_done <= 0;
+                    end
+                    1 : begin
+                        o_packet_to_tb.head <= o_packet_to_tb.head;
+                        o_packet_to_tb.body1 <= in_data_out;
+                        o_packet_to_tb.body2 <= '0;
+                        o_packet_to_tb.tail  <= '0;
+                        o_packet_done <= 0;
+                    end
+                    2 : begin
+                        o_packet_to_tb.head <= o_packet_to_tb.head;
+                        o_packet_to_tb.body1 <= o_packet_to_tb.body1;
+                        o_packet_to_tb.body2 <= in_data_out;
+                        o_packet_to_tb.tail  <= '0;
+                        o_packet_done <= 0;
+                    end
+                    
+                    3 : begin
+                        o_packet_to_tb.head <= o_packet_to_tb.head;
+                        o_packet_to_tb.body1 <= o_packet_to_tb.body1;
+                        o_packet_to_tb.body2 <= o_packet_to_tb.body2;
+                        o_packet_to_tb.tail  <= in_data_out;
+                        o_packet_done <= 1;
+                    end
+                endcase
+                packet_idx <= packet_idx + 1;
+                //o_flit <= data_out;
+                
+            end
+            else begin
+                //o_flit <= '0;
+                packet_idx <= 0;
+                o_packet_to_tb <= '0;
+                o_packet_done <= 0;
+            end
+       end
     
     end
     
@@ -118,9 +165,8 @@ module TrafficGenerator
         if( i_start ) begin
             case(curr_in_state)
                 IN_IDLE : next_in_state = i_rec_req && in_fifo_empty  ? IN_REC : IN_IDLE;
-                IN_REC : next_in_state = ~in_fifo_full ? IN_REC : IN_READ;
-                IN_READ : next_in_state = ~in_fifo_empty ? IN_READ : IN_SENDING;
-                IN_SENDING : next_in_state = ~fifo_empty ? IN_SENDING : IN_IDLE;
+                IN_REC : next_in_state =  ~in_fifo_full ? IN_REC  : IN_READ;
+                IN_READ : next_in_state = ~in_fifo_empty ? IN_READ : IN_IDLE;
             endcase 
         end
     end 
@@ -130,7 +176,8 @@ module TrafficGenerator
         if(i_start) begin
             unique case(curr_out_state)
                 OUT_IDLE : next_out_state = i_tb_flit_request && fifo_empty ? OUT_RECEIVING : OUT_IDLE;
-                OUT_RECEIVING: next_out_state = fifo_full ? OUT_SENDING : OUT_RECEIVING;
+                OUT_RECEIVING:  next_out_state = fifo_full ? OUT_REQUESTING : OUT_RECEIVING;
+                OUT_REQUESTING : next_out_state = i_send ? OUT_SENDING : OUT_REQUESTING;
                 OUT_SENDING:   next_out_state = fifo_empty ? OUT_IDLE : OUT_SENDING;
             endcase 
         end
@@ -145,7 +192,7 @@ module TrafficGenerator
             if(i_flit_from_router.flit[FLIT_SIZE-1] && i_flit_from_router.tail.flit_type == TAIL_FLIT) begin
                 received <= received + 1;
                 ///$display("received : %d",received);
-                
+                 
               end
              else received <= received;
         end
@@ -157,26 +204,25 @@ module TrafficGenerator
         o_rec_ack = 0;
        
         in_fifo_write = 0;
-        pass_en = 0;
+        in_fifo_read = 0;
+        pass_en=0;
         if(i_start) begin 
             case(curr_in_state)
-                IN_IDLE : ;
+                IN_IDLE : if(i_rec_req && in_fifo_empty) o_rec_ack = 1;
                 IN_REC  : begin
-                 o_rec_ack = 1;
+                 //o_rec_ack = 1;
                  if(i_flit_from_router.flit[FLIT_SIZE-1]) begin
                     if(i_flit_from_router.tail.flit_type == TAIL_FLIT) begin
                         
-                         $display("Id Received  : x:%d, y:%d",i_flit_from_router.tail.reserved[15:8],i_flit_from_router.tail.reserved[7:0]);
+                        // $display("Id Received at (%d,%d) : x:%d, y:%d",router_conf.xaddr,router_conf.yaddr,i_flit_from_router.head.xaddr,i_flit_from_router.head.yaddr);
                     end
                     in_fifo_write = 1;
                    
                    end
                 end
                 IN_READ : begin
-                    pass_en = 1;
-                    //in_fifo_read = 1;
+                   in_fifo_read = 1;
                 end
-                IN_SENDING : pass_en = 1;
             
             endcase
         end    
@@ -190,17 +236,22 @@ module TrafficGenerator
        o_tb_flit_ack = 0;
        unique case(curr_out_state)
         OUT_IDLE: begin
-            
+//            if(i_tb_flit_request && in_fifo_empty)
+//                o_tb_flit_ack = 1;
         end
         OUT_RECEIVING : begin
-            if(~fifo_full) begin
+        
+        o_tb_flit_ack = 1;
+            if(~fifo_full && i_flit_from_tb.flit[FLIT_SIZE-1]) begin
                 fifo_write = 1;
-                o_tb_flit_ack = 1;
+                
             end
         end
-        OUT_SENDING : begin
+        OUT_REQUESTING : begin
             o_transmit = 1;
-            if(i_send && ~fifo_empty)
+        end
+        OUT_SENDING : begin
+            if( ~fifo_empty)
                 fifo_read = 1;
         end
        endcase

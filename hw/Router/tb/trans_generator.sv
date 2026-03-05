@@ -3,12 +3,17 @@
 //import router_pkg::*;
 
 
-class trans_generator;
-    rand transaction trans;
-    mailbox gen2driv;
+virtual class trans_generator;
     int repeat_count;
+    mailbox gen2driv;
     event ended;
-    FLIT_TYPE_t current_type = HEAD_FLIT;
+    pure virtual task main();
+
+endclass
+
+
+class rand_trans_generator extends trans_generator;
+    rand transaction trans;
     
   function new(mailbox gen2driv,event ended);
     //getting the mailbox handle from env
@@ -16,24 +21,38 @@ class trans_generator;
     this.ended    = ended;
   endfunction
     
-    task main();
-
-        FLIT_TYPE_t flit_sequence[NUM_OF_FLITS] = '{HEAD_FLIT, BODY_FLIT, BODY_FLIT, TAIL_FLIT};  // desired order
-        int rep;  
     
-        for (rep = 0; rep < repeat_count; rep++) begin
-            foreach(flit_sequence[i]) begin
-                transaction trans = new();
-    
-                trans.flit_type = flit_sequence[i];
-                assert(trans.randomize()) else $fatal("Randomization failed");
-    
-                gen2driv.put(trans);
-            end
+  virtual task main();
+       repeat(repeat_count) begin 
+           trans = new();       
+           assert(trans.randomize()) else $fatal("Randomization failed");
+           gen2driv.put(trans);           
         end
-    
         -> ended;
-
     endtask
 endclass
 
+
+class defined_trans_generator extends trans_generator;
+    transaction transaction_list[$];
+    
+    function new(mailbox gen2driv,event ended);
+    //getting the mailbox handle from env
+        this.gen2driv = gen2driv;
+        this.ended    = ended;
+    endfunction
+    
+    function register_transaction(transaction trans);
+        transaction_list.push_back(trans);
+    endfunction
+    
+    virtual task main();
+        repeat(repeat_count) begin
+            foreach(transaction_list[i]) begin
+                gen2driv.put(transaction_list[i]);
+            end
+        end
+        -> ended;
+    endtask
+
+endclass

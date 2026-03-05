@@ -61,7 +61,9 @@ import router_pkg::*;
                     .o_transmit(transmit[i][j][LOCAL_PORT]),
                     .i_flit_from_router(s2d[i][j][LOCAL_PORT].flit),
                     .i_rec_req(downstream_req[i][j][LOCAL_PORT]),
-                    .o_rec_ack(downstream_ack[i][j][LOCAL_PORT])
+                    .o_rec_ack(downstream_ack[i][j][LOCAL_PORT]),
+                    .o_packet_to_tb(tbBus.out_packets[i][j]),
+                    .o_packet_done(tbBus.out_packet_done[i][j])
                 );
     
                  
