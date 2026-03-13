@@ -38,9 +38,7 @@ module Router_tb
     hello_world t1 = new(tbBus);
     broadcast_test t3 = new(tbBus);
     
-    NoC_top dut (
-        tbBus.DUT
-    );
+    NoC_top_tb_wrap dut (tbBus);
     
     initial begin
     reset = 0;   

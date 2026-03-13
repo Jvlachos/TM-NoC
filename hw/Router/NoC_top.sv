@@ -1,90 +1,63 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 04/29/2025 08:05:12 PM
-// Design Name: 
-// Module Name: NoC_top
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
-    
 module NoC_top
 import router_pkg::*;
 (
-//    input  logic clk,
-//    input  logic reset_n,
-//    input  logic start,
-//    input FLIT_t flits [0:ROWS-1][0:COLUMNS-1],
-//    input logic tb_flit_request [0:ROWS-1][0:COLUMNS-1],
-//    output tb_flit_ack [0:ROWS-1][0:COLUMNS-1]
-TbBusInt tbBus
-
+    input  logic                                     clk,
+    input  logic                                     reset_n,
+    input  logic                                     start,
+    input  FLIT_t    flits          [0:ROWS-1][0:COLUMNS-1],
+    input  logic     tb_flit_request[0:ROWS-1][0:COLUMNS-1],
+    output logic     tb_flit_ack    [0:ROWS-1][0:COLUMNS-1],
+    output PACKET_t  out_packets    [0:ROWS-1][0:COLUMNS-1],
+    output logic     out_packet_done[0:ROWS-1][0:COLUMNS-1]
 );
-    
-    FLIT_t data_out   [ROWS][COLUMNS][NUM_OF_PORTS];
-    logic transmit    [ROWS][COLUMNS][NUM_OF_PORTS];
-    logic send        [ROWS][COLUMNS][NUM_OF_PORTS];
-    logic downstream_ack [ROWS][COLUMNS][NUM_OF_PORTS];
-    logic downstream_req [ROWS][COLUMNS][NUM_OF_PORTS];
-    router_pipeline_bus_t s2d [ROWS][COLUMNS][NUM_OF_PORTS];
-    FLIT_t to_router [ROWS][COLUMNS][NUM_OF_PORTS];
-    
-   
-    
-    
+    FLIT_t data_out      [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic  transmit      [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic  send          [ROWS][COLUMNS][NUM_OF_PORTS];
+    logic  downstream_ack[ROWS][COLUMNS][NUM_OF_PORTS];
+    logic  downstream_req[ROWS][COLUMNS][NUM_OF_PORTS];
+    router_pipeline_bus_t s2d      [ROWS][COLUMNS][NUM_OF_PORTS];
+    FLIT_t to_router     [ROWS][COLUMNS][NUM_OF_PORTS];
+
     genvar i,j;
     generate
         for (i = 0; i < ROWS; i++) begin
             for (j = 0; j < COLUMNS; j++) begin
                 TrafficGenerator #(
-                .router_conf('{xaddr: j, yaddr: i})
-                )trafficGen(
-                    .clk(tbBus.clk),
-                    .reset_n(tbBus.reset_n),
-                    .i_start(tbBus.start),
-                    .i_flit_from_tb(tbBus.flits[i][j]),
-                    .i_tb_flit_request(tbBus.tb_flit_request[i][j]),
-                    .o_tb_flit_ack(tbBus.tb_flit_ack[i][j]),
-                    .i_send(send[i][j][LOCAL_PORT]),
-                    .o_flit(data_out[i][j][LOCAL_PORT]),
-                    .o_transmit(transmit[i][j][LOCAL_PORT]),
-                    .i_flit_from_router(s2d[i][j][LOCAL_PORT].flit),
-                    .i_rec_req(downstream_req[i][j][LOCAL_PORT]),
-                    .o_rec_ack(downstream_ack[i][j][LOCAL_PORT]),
-                    .o_packet_to_tb(tbBus.out_packets[i][j]),
-                    .o_packet_done(tbBus.out_packet_done[i][j])
+                    .router_conf('{xaddr: j, yaddr: i})
+                ) trafficGen (
+                    .clk                (clk),
+                    .reset_n            (reset_n),
+                    .i_start            (start),
+                    .i_flit_from_tb     (flits[i][j]),
+                    .i_tb_flit_request  (tb_flit_request[i][j]),
+                    .o_tb_flit_ack      (tb_flit_ack[i][j]),
+                    .i_send             (send[i][j][LOCAL_PORT]),
+                    .o_flit             (data_out[i][j][LOCAL_PORT]),
+                    .o_transmit         (transmit[i][j][LOCAL_PORT]),
+                    .i_flit_from_router (s2d[i][j][LOCAL_PORT].flit),
+                    .i_rec_req          (downstream_req[i][j][LOCAL_PORT]),
+                    .o_rec_ack          (downstream_ack[i][j][LOCAL_PORT]),
+                    .o_packet_to_tb     (out_packets[i][j]),
+                    .o_packet_done      (out_packet_done[i][j])
                 );
-    
-                 
-                 Router #(
-                .router_conf('{xaddr: j, yaddr: i})
-                )router(
-                    .clk(tbBus.clk),
-                    .reset_n(tbBus.reset_n),
-                    .i_flit(to_router[i][j]),
-                    .i_upstream_req(transmit[i][j]),
-                    .i_downstream_ack(downstream_ack[i][j]),
-                    .o_on_off(send[i][j]),
-                    .o_downstream_req(downstream_req[i][j]),
-                    .o_s2d(s2d[i][j])
+
+                Router #(
+                    .router_conf('{xaddr: j, yaddr: i})
+                ) router (
+                    .clk              (clk),
+                    .reset_n          (reset_n),
+                    .i_flit           (to_router[i][j]),
+                    .i_upstream_req   (transmit[i][j]),
+                    .i_downstream_ack (downstream_ack[i][j]),
+                    .o_on_off         (send[i][j]),
+                    .o_downstream_req (downstream_req[i][j]),
+                    .o_s2d            (s2d[i][j])
                 );
-                
+
                 // Connect LOCAL
                 assign to_router[i][j][LOCAL_PORT] = data_out[i][j][LOCAL_PORT];
-                
+
                 // North port connection
                 if (i > 0) begin: north_connect
                     assign to_router[i][j][NORTH_PORT] = s2d[i-1][j][SOUTH_PORT].flit;
@@ -94,7 +67,7 @@ TbBusInt tbBus
                     assign to_router[i][j][NORTH_PORT] = '0;
                     assign transmit[i][j][NORTH_PORT] = '0;
                 end
-                
+
                 // South port connection
                 if (i < ROWS-1) begin: south_connect
                     assign to_router[i][j][SOUTH_PORT] = s2d[i+1][j][NORTH_PORT].flit;
@@ -104,7 +77,7 @@ TbBusInt tbBus
                     assign to_router[i][j][SOUTH_PORT] = '0;
                     assign transmit[i][j][SOUTH_PORT] = '0;
                 end
-                
+
                 // West port connection
                 if (j > 0) begin: west_connect
                     assign to_router[i][j][WEST_PORT] = s2d[i][j-1][EAST_PORT].flit;
@@ -114,7 +87,7 @@ TbBusInt tbBus
                     assign to_router[i][j][WEST_PORT] = '0;
                     assign transmit[i][j][WEST_PORT] = '0;
                 end
-                
+
                 // East port connection
                 if (j < COLUMNS-1) begin: east_connect
                     assign to_router[i][j][EAST_PORT] = s2d[i][j+1][WEST_PORT].flit;
@@ -128,4 +101,3 @@ TbBusInt tbBus
         end
     endgenerate
 endmodule
-
