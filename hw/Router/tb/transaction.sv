@@ -1,12 +1,8 @@
-
-
 import router_pkg::*;
 class transaction;
    FLIT_t flits[NUM_OF_FLITS];
    
    PACKET_t out_packet;
-   ROUTER_CONFIG out_addr;
-   ROUTER_CONFIG in_addr;
    rand logic[$clog2(ROWS)-1 :0] xaddr;
    rand logic[$clog2(COLUMNS)-1 :0] yaddr;
    

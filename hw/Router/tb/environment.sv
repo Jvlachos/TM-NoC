@@ -1,10 +1,3 @@
-
-`include "transaction.sv"
-`include "trans_generator.sv"
-`include "driver.sv"
-`include "monitor.sv"
-`include "scoreboard.sv"
-
 class environment;
    
     driver    driv;
@@ -19,20 +12,22 @@ class environment;
     event gen_ended;
     
     virtual TbBusInt tbBusVif;
-    
+    static bit stop_threads = 0;
 
     
     function new(virtual TbBusInt tbBusVif, trans_generator gen = null);
-        rand_trans_generator rand_gen;
-        this.tbBusVif = tbBusVif;
-        this.gen2driv = new();
         this.mon2scb  = new();
-        if(gen == null) begin //default is random
+        this.tbBusVif = tbBusVif;
+        if (gen == null) begin
+            rand_trans_generator rand_gen;
+            this.gen2driv = new();
             rand_gen = new(gen2driv, gen_ended);
             this.gen = rand_gen;
+        end else begin
+            this.gen2driv  = gen.gen2driv;
+            gen.ended      = gen_ended;
+            this.gen       = gen;
         end
-         else 
-            this.gen = gen;
         this.driv = new(tbBusVif, gen2driv);
         this.mon  = new(tbBusVif, mon2scb);
         this.scb  = new(mon2scb);
@@ -62,6 +57,6 @@ class environment;
         pre_test();
         test();
         post_test();
-        $finish;
+        disable fork;
     endtask
 endclass

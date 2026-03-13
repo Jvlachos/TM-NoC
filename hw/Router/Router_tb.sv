@@ -21,7 +21,6 @@
 
 `define CLK_PERIOD 20
 import router_pkg::*;
-//`include "tb/RouterTests/basic_router_test.sv"
 
 module Router_tb
 
@@ -35,17 +34,23 @@ module Router_tb
     
     TbBusInt tbBus(clk, reset);
    
-    basic_router_test t1 = new(tbBus);
+    //basic_router_test t1 = new(tbBus);
+    hello_world t1 = new(tbBus);
+    broadcast_test t3 = new(tbBus);
     
     NoC_top dut (
         tbBus.DUT
     );
     
     initial begin
-        
-        reset = 0;   
-        #5 reset = 1;
-        t1.run();
+    reset = 0;   
+    #5 reset = 1;
+    t1.run();
 
-    end
+    reset = 0;
+    #5 reset = 1;
+    
+    t3.run();
+    $finish;
+end
 endmodule

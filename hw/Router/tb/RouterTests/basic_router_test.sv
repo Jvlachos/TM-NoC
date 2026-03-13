@@ -1,5 +1,3 @@
-
-`include "../environment.sv"
 class basic_router_test;
     environment env;
     virtual TbBusInt intf;

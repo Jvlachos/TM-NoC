@@ -24,12 +24,14 @@
 module NoC_top
 import router_pkg::*;
 (
-    input  logic clk,
-    input  logic reset_n,
-    input  logic start,
-    input FLIT_t flits [0:ROWS-1][0:COLUMNS-1],
-    input logic tb_flit_request [0:ROWS-1][0:COLUMNS-1],
-    output tb_flit_ack [0:ROWS-1][0:COLUMNS-1]
+//    input  logic clk,
+//    input  logic reset_n,
+//    input  logic start,
+//    input FLIT_t flits [0:ROWS-1][0:COLUMNS-1],
+//    input logic tb_flit_request [0:ROWS-1][0:COLUMNS-1],
+//    output tb_flit_ack [0:ROWS-1][0:COLUMNS-1]
+TbBusInt tbBus
+
 );
     
     FLIT_t data_out   [ROWS][COLUMNS][NUM_OF_PORTS];
@@ -50,12 +52,12 @@ import router_pkg::*;
                 TrafficGenerator #(
                 .router_conf('{xaddr: j, yaddr: i})
                 )trafficGen(
-                    .clk(clk),
-                    .reset_n(reset_n),
-                    .i_start(start),
-                    .i_flit_from_tb(flits[i][j]),
-                    .i_tb_flit_request(tb_flit_request[i][j]),
-                    .o_tb_flit_ack(tb_flit_ack[i][j]),
+                    .clk(tbBus.clk),
+                    .reset_n(tbBus.reset_n),
+                    .i_start(tbBus.start),
+                    .i_flit_from_tb(tbBus.flits[i][j]),
+                    .i_tb_flit_request(tbBus.tb_flit_request[i][j]),
+                    .o_tb_flit_ack(tbBus.tb_flit_ack[i][j]),
                     .i_send(send[i][j][LOCAL_PORT]),
                     .o_flit(data_out[i][j][LOCAL_PORT]),
                     .o_transmit(transmit[i][j][LOCAL_PORT]),
@@ -70,8 +72,8 @@ import router_pkg::*;
                  Router #(
                 .router_conf('{xaddr: j, yaddr: i})
                 )router(
-                    .clk(clk),
-                    .reset_n(reset_n),
+                    .clk(tbBus.clk),
+                    .reset_n(tbBus.reset_n),
                     .i_flit(to_router[i][j]),
                     .i_upstream_req(transmit[i][j]),
                     .i_downstream_ack(downstream_ack[i][j]),

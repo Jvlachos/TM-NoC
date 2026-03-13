@@ -44,7 +44,7 @@ class monitor;
                         trans.out_packet = `MON_IF.out_packets[j][i];
                         trans.tg_xaddr = i;
                         trans.tg_yaddr = j;
-                       // $display("[Monitor] Got packet from (%d, %d)",i,j);
+                        $display("[Monitor] Got packet from (%d, %d)",i,j);
                         //@(posedge vif.clk);
                         mon2scb.put(trans);
                         ack_seen[j][i] = 1;
