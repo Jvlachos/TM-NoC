@@ -7,8 +7,8 @@ class basic_router_test;
         env.gen.repeat_count = 1000;
     endfunction
     
-    task run;
-        env.run();
+    task run(output int result);
+        env.run(result);
     endtask
 
 endclass

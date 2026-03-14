@@ -48,18 +48,17 @@ class environment;
         join_any
     endtask
 
-    task post_test();
+    task post_test(output int result);
         wait(gen_ended.triggered);
         wait(gen.repeat_count == driv.no_transactions);
         wait(driv.pending_q.size()==0);
         wait(gen.repeat_count == scb.no_transactions);
-        scb.check();
+        result = scb.check();
     endtask
-
-    task run();
+    
+    task run(output int result);
         pre_test();
         test();
-        post_test();
-        disable fork;
+        post_test(result);
     endtask
 endclass

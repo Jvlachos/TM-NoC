@@ -27,7 +27,7 @@ class scoreboard;
         end
     endtask
 
-    function void check();
+    function int check();
         int errors = 0;
         $display("[Scoreboard] ---- Final Check ----");
         for (int dst_r = 0; dst_r < ROWS; dst_r++) begin
@@ -52,10 +52,13 @@ class scoreboard;
                                 refmod.expected_count[dst_r][dst_c][src_r][src_c]);
             end
         end
-        if (errors == 0)
-            $display("[Scoreboard] ALL PASS - %0d/%0d packets correct",
-                no_transactions, refmod.total_expected);
-        else
+        if (errors == 0) begin
+        $display("[Scoreboard] ALL PASS - %0d/%0d packets correct",
+            no_transactions, refmod.total_expected);
+            return 1;
+        end else begin
             $display("[Scoreboard] FAILED - %0d router(s) had wrong packet count", errors);
+            return 0;
+        end
     endfunction
 endclass

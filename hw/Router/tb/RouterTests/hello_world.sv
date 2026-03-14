@@ -81,7 +81,7 @@ class hello_world;
         return t;
     endfunction
 
-    task run();
-        env.run();
+    task run(output int result);
+        env.run(result);
     endtask
 endclass

@@ -14,15 +14,14 @@ class driver;
     endfunction
 
     task reset;
-        wait(~tbBusVif.reset_n);
         $display("------[DRIVER]: Reset Started ------\n");
-        `DRIV_IF.start <= 0;
-        `DRIV_IF.flits <= '{default:'0};
-        `DRIV_IF.tb_flit_request <= '{default:'0};
-        `DRIV_IF.out_addrs  <= '{default:'0};
+        `DRIV_IF.start              <= 0;
+        `DRIV_IF.flits              <= '{default:'0};
+        `DRIV_IF.tb_flit_request    <= '{default:'0};
+        `DRIV_IF.out_addrs          <= '{default:'0};
         wait(tbBusVif.reset_n);
         $display("------[DRIVER]: Reset Ended ------\n");
-    endtask;
+    endtask
 
     task request_thread();
         transaction trans;
