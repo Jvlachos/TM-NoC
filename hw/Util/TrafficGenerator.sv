@@ -175,11 +175,12 @@ module TrafficGenerator
         next_out_state = OUT_IDLE;
         if(i_start) begin
             unique case(curr_out_state)
-                OUT_IDLE : next_out_state = i_tb_flit_request && fifo_empty ? OUT_RECEIVING : OUT_IDLE;
-                OUT_RECEIVING:  next_out_state = fifo_full ? OUT_REQUESTING : OUT_RECEIVING;
-                OUT_REQUESTING : next_out_state = i_send ? OUT_SENDING : OUT_REQUESTING;
-                OUT_SENDING:   next_out_state = fifo_empty ? OUT_IDLE : OUT_SENDING;
-            endcase 
+                OUT_IDLE      : next_out_state = i_tb_flit_request && fifo_empty ? OUT_RECEIVING : OUT_IDLE;
+                OUT_RECEIVING : next_out_state = fifo_full ? OUT_REQUESTING : OUT_RECEIVING;
+                OUT_REQUESTING: next_out_state = i_send ? OUT_SENDING : OUT_REQUESTING;
+                OUT_SENDING   : next_out_state = fifo_empty ? OUT_IDLE : OUT_SENDING;
+                default       : next_out_state = OUT_IDLE;
+            endcase
         end
     end
     

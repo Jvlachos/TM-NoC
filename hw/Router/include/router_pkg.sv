@@ -147,8 +147,6 @@ package router_pkg;
     
      typedef struct packed {
         PORT_STATUS_t port_status;
-        PORT_ADDR_t   port_addr;
-        GI_VEC_t     port_vec;
     } OUT_PORT_t;
      
     function automatic FLIT_t invalid_flit();

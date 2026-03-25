@@ -95,6 +95,7 @@ assign o_fifo_full = (wr_ptr_ff[FIFO_DEPTH-1:0] == rd_ptr_ff[FIFO_DEPTH-1:0] &
     end
 
     always_comb begin : read_mem
+        o_fifo_read_data = '0;
         if(~o_fifo_empty & i_fifo_read) begin 
 //            $display("Reading from mem[%0d] : 0x%0h\n",rd_ptr_ff[FIFO_DEPTH-1:0],mem[rd_ptr_ff[FIFO_DEPTH-1:0]]);
             o_fifo_read_data = mem[rd_ptr_ff[FIFO_DEPTH-1:0]];

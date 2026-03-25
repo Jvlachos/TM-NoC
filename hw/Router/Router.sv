@@ -40,7 +40,6 @@ module Router
     
     logic routing_success[NUM_OF_PORTS];
     logic switch_req[NUM_OF_PORTS];
-    logic switch_ack[NUM_OF_PORTS];
     logic [NUM_OF_PORTS-1:0]outport_ack[NUM_OF_PORTS];
     logic [NUM_OF_PORTS-1:0]outport_req[NUM_OF_PORTS];
     
@@ -54,7 +53,6 @@ module Router
                 .reset_n(reset_n),
                 .i_flit(i_flit[i]),
                 .i_upstream_req(i_upstream_req[i]),
-                .i_switch_ack(switch_ack[i]),
                 .i_routing_success(routing_success[i]),
                 .o_transmit_ack(o_on_off[i]), 
                 .o_switch_req(switch_req[i]), 
@@ -71,7 +69,6 @@ module Router
                 .i_downstream_ack(i_downstream_ack[i]),
                 .o_outport_ack(outport_ack[i]), //ayto
                 .o_downstream_req(o_downstream_req[i]),
-                .o_vec(oport[i].port_vec),
                 .o_port_status(oport[i].port_status),
                 .o_o2d(o_s2d[i])
             );
