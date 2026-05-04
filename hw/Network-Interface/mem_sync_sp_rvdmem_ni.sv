@@ -32,7 +32,8 @@ module mem_sync_sp_rvdmem_ni#(
 ) (
   input                           clk,
 
-  input        [ADDR_WIDTH-1:0]   i_addr,
+  input        [ADDR_WIDTH-1:0]   i_waddr,
+  input        [ADDR_WIDTH-1:0]   i_raddr,
   input        [DATA_WIDTH-1:0]   i_wdata,
   input        [DATA_BYTES-1:0]   i_wen,
   output logic [DATA_WIDTH-1:0]   o_rdata
@@ -41,9 +42,10 @@ module mem_sync_sp_rvdmem_ni#(
 localparam ADDR_SIZE = $clog2(DEPTH);
 localparam ADDR_LOW  = $clog2(DATA_BYTES);
 localparam ADDR_HIGH = ADDR_SIZE + ADDR_LOW - 1;
-logic [ADDR_SIZE-1:0] addr;
-assign addr = i_addr[ADDR_HIGH : ADDR_LOW];
-
+logic [ADDR_SIZE-1:0] waddr;
+logic [ADDR_SIZE-1:0] raddr;
+assign waddr = i_waddr[ADDR_HIGH : ADDR_LOW];
+assign raddr = i_raddr[ADDR_HIGH : ADDR_LOW];
 
 logic [DATA_WIDTH-1:0] mem [0 : DEPTH-1] = '{default: '0};;
 
@@ -53,14 +55,14 @@ always @(posedge clk) begin
   if ( (i_wen != 0) ) begin
     for (int i=0 ; i<DATA_BYTES; i++) begin
       if ( i_wen[i] ) begin
-        mem[addr][8*i +: 8] = i_wdata[8*i +: 8];
+        mem[waddr][8*i +: 8] = i_wdata[8*i +: 8];
       end
     end
   //$display("WRITE CONFIRM - WRITTING :0x%0h at : 0x%0h ACTUAL : 0x%0h\n",i_wdata,addr,mem[addr]);
   end
 
   //$display("READING ADDRESS : 0x%0h IADDR : 0x%0h --- DATA: 0x%0h\n",addr,i_addr,mem[addr]);
-  o_rdata = mem[addr];
+  o_rdata = mem[raddr];
   // override with cycle value when reading from the sim cycle address
 
 end

@@ -30,11 +30,7 @@ module NI_tb(
     
     mem_bus_if mem_bus();
     core_top core(.clk(clk), .rst(rst),.ext_mem_bus(mem_bus));
-    ni_frontend ni_front(
-        .clk(clk),
-        .rst_n(rst),
-        .mem_bus(mem_bus)
-    );
+    ni_top ni (.clk(clk), .rst_n(rst), .mem_bus(mem_bus));
     initial begin       
         rst= 0;   
         @(posedge clk);
