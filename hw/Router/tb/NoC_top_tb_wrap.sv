@@ -25,7 +25,7 @@ import router_pkg::*;
 (
     TbBusInt tbBus
 );
-    NoC_top dut (
+    NoC_tb_top dut (
         .clk             (tbBus.clk),
         .reset_n         (tbBus.reset_n),
         .start           (tbBus.start),

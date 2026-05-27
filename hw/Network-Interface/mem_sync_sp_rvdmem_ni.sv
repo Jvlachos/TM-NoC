@@ -61,9 +61,7 @@ always @(posedge clk) begin
   //$display("WRITE CONFIRM - WRITTING :0x%0h at : 0x%0h ACTUAL : 0x%0h\n",i_wdata,addr,mem[addr]);
   end
 
-  //$display("READING ADDRESS : 0x%0h IADDR : 0x%0h --- DATA: 0x%0h\n",addr,i_addr,mem[addr]);
-  o_rdata = mem[raddr];
-  // override with cycle value when reading from the sim cycle address
-
 end
+
+assign o_rdata = mem[raddr];
 endmodule

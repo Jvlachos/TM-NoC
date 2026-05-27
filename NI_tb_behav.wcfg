@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Noc_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="Noc_tb" />
+            <top_module name="core" />
+            <top_module name="glbl" />
+            <top_module name="ni_pkg" />
+            <top_module name="noc_pkg" />
+            <top_module name="riscv" />
+            <top_module name="router_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="51,356.500 ns"></ZoomStartTime>
+      <ZoomEndTime time="55,676.501 ns"></ZoomEndTime>
+      <Cursor1Time time="54,956.500 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="277"></NameColumnWidth>
+      <ValueColumnWidth column_width="114"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].core /mem_s/memory_instance/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /i_flit" type="array">
+      <obj_property name="ElementShortName">i_flit</obj_property>
+      <obj_property name="ObjectShortName">i_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/mem_bus/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/mem_bus/w_data" type="array">
+      <obj_property name="ElementShortName">w_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">w_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/\gen_mem[0].tx_memory /mem" type="array">
+      <obj_property name="ElementShortName">mem[0:255][31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:255][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/dbg_addr" type="array">
+      <obj_property name="ElementShortName">dbg_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dbg_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/\gen_mem[0].tx_memory /i_waddr" type="array">
+      <obj_property name="ElementShortName">i_waddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_waddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/\gen_mem[0].tx_memory /i_wdata" type="array">
+      <obj_property name="ElementShortName">i_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[0].network_interface /ni_front/mem_write_en" type="array">
+      <obj_property name="ElementShortName">mem_write_en[15:0][3:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_write_en[15:0][3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /mem_bus/w_data" type="array">
+      <obj_property name="ElementShortName">w_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">w_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /mem_bus/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/dbg_addr" type="array">
+      <obj_property name="ElementShortName">dbg_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dbg_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/mem_write_en" type="array">
+      <obj_property name="ElementShortName">mem_write_en[15:0][3:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_write_en[15:0][3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/\genblk2[0].memmapped_reg /_reg" type="array">
+      <obj_property name="ElementShortName">_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/tx_regs_write_en" type="array">
+      <obj_property name="ElementShortName">tx_regs_write_en[0:15][3:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_regs_write_en[0:15][3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/tx_regs_data_in" type="array">
+      <obj_property name="ElementShortName">tx_regs_data_in[15:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_regs_data_in[15:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /o_flit" type="array">
+      <obj_property name="ElementShortName">o_flit</obj_property>
+      <obj_property name="ObjectShortName">o_flit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /txfront_to_fsm_req" type="array">
+      <obj_property name="ElementShortName">txfront_to_fsm_req[15:0]</obj_property>
+      <obj_property name="ObjectShortName">txfront_to_fsm_req[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/tx_grant" type="array">
+      <obj_property name="ElementShortName">tx_grant[15:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_grant[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Noc_tb/noc/\genblk1[0].genblk1[1].network_interface /ni_front/tx_last_word" type="array">
+      <obj_property name="ElementShortName">tx_last_word[15:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_last_word[15:0]</obj_property>
+   </wvobject>
+</wave_config>
